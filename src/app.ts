@@ -4,21 +4,20 @@ import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import path from 'path';
 import userRouter from './routes/user.route';
-
+import postRouter from './routes/post.route';
 
 const app = express();
 const PORT = 3000;
 const MONGO_URI = 'mongodb+srv://guygips:INT56789@bloodyint.vnsgnuk.mongodb.net/?retryWrites=true&w=majority&appName=BloodyInt';
-
 const JWT_SECRET = 'super-secret-key';
 
 app.use(cors({ origin: true, credentials: true }));
 app.use(express.json());
 app.use(cookieParser());
-
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/api/users', userRouter);
+app.use('/api/posts', postRouter);
 
 mongoose.connect(MONGO_URI)
   .then(() => {
