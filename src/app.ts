@@ -5,6 +5,8 @@ import cookieParser from 'cookie-parser';
 import path from 'path';
 import userRouter from './routes/user.route';
 import postRouter from './routes/post.route';
+import commentRouter from './routes/comment.route';
+
 
 const app = express();
 const PORT = 3000;
@@ -17,6 +19,7 @@ app.use(cookieParser());
 
 app.use('/api/users', userRouter);
 app.use('/api/posts', postRouter);
+app.use('/api/comments', commentRouter);
 
 app.use(express.static(path.join(__dirname, 'public')));
 
