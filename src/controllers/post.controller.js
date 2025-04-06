@@ -1,3 +1,4 @@
+"use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -7,9 +8,14 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import { PostModel } from '../models/post.model';
-import { randomUUID } from 'crypto';
-export function createPost(req, res) {
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.createPost = createPost;
+exports.getAllPosts = getAllPosts;
+exports.getPostById = getPostById;
+exports.deletePostById = deletePostById;
+const post_model_1 = require("../models/post.model");
+const crypto_1 = require("crypto");
+function createPost(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             const user = req.user;
@@ -19,7 +25,7 @@ export function createPost(req, res) {
             }
             const { title, content } = req.body;
             const post = {
-                id: randomUUID(),
+                id: (0, crypto_1.randomUUID)(),
                 title,
                 content,
                 createdAt: Date.now(),
@@ -28,7 +34,7 @@ export function createPost(req, res) {
                     username: user.username
                 }
             };
-            yield PostModel.create(post);
+            yield post_model_1.PostModel.create(post);
             res.status(201).json({ message: 'Post created successfully' });
         }
         catch (err) {
@@ -36,10 +42,10 @@ export function createPost(req, res) {
         }
     });
 }
-export function getAllPosts(req, res) {
+function getAllPosts(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            const posts = yield PostModel.find().sort({ createdAt: -1 });
+            const posts = yield post_model_1.PostModel.find().sort({ createdAt: -1 });
             res.status(200).json(posts);
         }
         catch (err) {
@@ -47,11 +53,11 @@ export function getAllPosts(req, res) {
         }
     });
 }
-export function getPostById(req, res) {
+function getPostById(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             const { id } = req.params;
-            const post = yield PostModel.findOne({ id });
+            const post = yield post_model_1.PostModel.findOne({ id });
             if (!post) {
                 res.status(404).json({ message: 'Post not found' });
                 return;
@@ -63,7 +69,7 @@ export function getPostById(req, res) {
         }
     });
 }
-export function deletePostById(req, res) {
+function deletePostById(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             const user = req.user;
@@ -72,7 +78,7 @@ export function deletePostById(req, res) {
                 return;
             }
             const { id } = req.params;
-            const post = yield PostModel.findOne({ id });
+            const post = yield post_model_1.PostModel.findOne({ id });
             if (!post) {
                 res.status(404).json({ message: 'Post not found' });
                 return;
@@ -81,7 +87,7 @@ export function deletePostById(req, res) {
                 res.status(403).json({ message: 'Permission denied' });
                 return;
             }
-            yield PostModel.deleteOne({ id });
+            yield post_model_1.PostModel.deleteOne({ id });
             res.status(200).json({ message: 'Post deleted successfully' });
         }
         catch (err) {

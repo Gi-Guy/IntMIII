@@ -1,3 +1,4 @@
+"use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -7,9 +8,14 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import { CommentModel } from '../models/comment.model';
-import { randomUUID } from 'crypto';
-export function createComment(req, res) {
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.createComment = createComment;
+exports.getCommentsByPostId = getCommentsByPostId;
+exports.deleteComment = deleteComment;
+exports.updateComment = updateComment;
+const comment_model_1 = require("../models/comment.model");
+const crypto_1 = require("crypto");
+function createComment(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             const user = req.user;
@@ -19,7 +25,7 @@ export function createComment(req, res) {
             }
             const { postId, content } = req.body;
             const comment = {
-                id: randomUUID(),
+                id: (0, crypto_1.randomUUID)(),
                 postId,
                 content,
                 createdAt: Date.now(),
@@ -28,7 +34,7 @@ export function createComment(req, res) {
                     username: user.username
                 }
             };
-            yield CommentModel.create(comment);
+            yield comment_model_1.CommentModel.create(comment);
             res.status(201).json({ message: 'Comment added' });
         }
         catch (err) {
@@ -36,11 +42,11 @@ export function createComment(req, res) {
         }
     });
 }
-export function getCommentsByPostId(req, res) {
+function getCommentsByPostId(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             const { postId } = req.params;
-            const comments = yield CommentModel.find({ postId }).sort({ createdAt: 1 });
+            const comments = yield comment_model_1.CommentModel.find({ postId }).sort({ createdAt: 1 });
             res.status(200).json(comments);
         }
         catch (err) {
@@ -48,12 +54,12 @@ export function getCommentsByPostId(req, res) {
         }
     });
 }
-export function deleteComment(req, res) {
+function deleteComment(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             const user = req.user;
             const { id } = req.params;
-            const comment = yield CommentModel.findOne({ id });
+            const comment = yield comment_model_1.CommentModel.findOne({ id });
             if (!comment) {
                 res.status(404).json({ message: 'Comment not found' });
                 return;
@@ -62,7 +68,7 @@ export function deleteComment(req, res) {
                 res.status(403).json({ message: 'Permission denied' });
                 return;
             }
-            yield CommentModel.deleteOne({ id });
+            yield comment_model_1.CommentModel.deleteOne({ id });
             res.status(200).json({ message: 'Comment deleted' });
         }
         catch (err) {
@@ -70,13 +76,13 @@ export function deleteComment(req, res) {
         }
     });
 }
-export function updateComment(req, res) {
+function updateComment(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             const user = req.user;
             const { id } = req.params;
             const { content } = req.body;
-            const comment = yield CommentModel.findOne({ id });
+            const comment = yield comment_model_1.CommentModel.findOne({ id });
             if (!comment) {
                 res.status(404).json({ message: 'Comment not found' });
                 return;

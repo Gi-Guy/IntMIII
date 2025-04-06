@@ -1,0 +1,53 @@
+:root {
+  --text: #eceaf2;
+  --background: #100c1c;
+  --primary: #a18ae1;
+  --secondary: #341390;
+  --accent: #652ffa;
+  --form-bg: #1a142a;
+  --radius: 6px;
+  --font-family: "Segoe UI", sans-serif;
+  --transition: 0.3s ease-in-out;
+}
+
+body {
+  background-color: var(--background);
+  color: var(--text);
+  font-family: var(--font-family);
+  margin: 0;
+  padding: 1rem;
+}
+
+button {
+  background-color: var(--accent);
+  color: var(--text);
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: background-color var(--transition);
+}
+
+button:hover {
+  background-color: var(--primary);
+}
+
+input, select {
+  background: var(--form-bg);
+  color: var(--text);
+  border: 1px solid var(--primary);
+  border-radius: var(--radius);
+  padding: 0.5rem;
+  margin-bottom: 0.75rem;
+  width: 100%;
+}
+
+form {
+  max-width: 400px;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+/*# sourceMappingURL=main.css.map */
