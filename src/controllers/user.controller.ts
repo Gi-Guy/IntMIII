@@ -93,3 +93,11 @@ export async function getCurrentUser(req: Request, res: Response): Promise<void>
     res.status(500).json({ message: 'Server error', error: err });
   }
 }
+export async function getAllUsers(req: Request, res: Response): Promise<void> {
+  try {
+    const users = await UserModel.find().select('-password');
+    res.status(200).json(users);
+  } catch (err) {
+    res.status(500).json({ message: 'Server error', error: err });
+  }
+}

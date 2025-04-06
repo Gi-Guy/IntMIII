@@ -14,10 +14,11 @@ const JWT_SECRET = 'super-secret-key';
 app.use(cors({ origin: true, credentials: true }));
 app.use(express.json());
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/api/users', userRouter);
 app.use('/api/posts', postRouter);
+
+app.use(express.static(path.join(__dirname, 'public')));
 
 mongoose.connect(MONGO_URI)
   .then(() => {
