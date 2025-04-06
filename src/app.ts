@@ -8,7 +8,8 @@ import userRouter from './routes/user.route';
 
 const app = express();
 const PORT = 3000;
-const MONGO_URI = 'mongodb+srv://guygips:<db_password>@bloodyint.vnsgnuk.mongodb.net/?retryWrites=true&w=majority&appName=BloodyInt';
+const MONGO_URI = 'mongodb+srv://guygips:INT56789@bloodyint.vnsgnuk.mongodb.net/?retryWrites=true&w=majority&appName=BloodyInt';
+
 const JWT_SECRET = 'super-secret-key';
 
 app.use(cors({ origin: true, credentials: true }));
