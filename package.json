@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "sass": "sass public/styles/main.scss public/styles/main.css --watch"
   },
   "keywords": [],
   "author": "",
@@ -25,6 +26,7 @@
     "@types/jsonwebtoken": "^9.0.9",
     "@types/node": "^22.14.0",
     "nodemon": "^3.1.9",
+    "sass": "^1.86.3",
     "ts-node": "^10.9.2",
     "typescript": "^5.8.3"
   }
