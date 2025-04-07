@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "sass": "sass src/public/styles/main.scss src/public/styles/main.css --watch"
+    "sass": "sass src/public/styles/main.scss src/public/styles/main.css --watch",
+    "build": "tsc && sass src/public/styles/main.scss src/public/styles/main.css",
+    "start": "npm run build && node src/app.js"
   },
   "keywords": [],
   "author": "",
