@@ -1,6 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const form = document.getElementById('register-form') as HTMLFormElement;
+    const form = document.getElementById('login-form') as HTMLFormElement;
     const message = document.getElementById('message') as HTMLParagraphElement;
+    const toRegister = document.getElementById('to-register') as HTMLButtonElement;
   
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
@@ -9,7 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const data = Object.fromEntries(formData.entries());
   
       try {
-        const res = await fetch('/api/users/register', {
+        const res = await fetch('/api/users/login', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(data)
@@ -18,19 +19,20 @@ document.addEventListener('DOMContentLoaded', () => {
         const result = await res.json();
   
         if (res.ok) {
-          message.textContent = 'Registration successful!';
+          message.textContent = 'Login successful!';
           message.style.color = 'var(--text)';
-          form.reset();
-          setTimeout(() => {
-            window.location.href = '/login/login.html';
-          }, 1000);
+          window.location.href = '/index.html';
         } else {
-          message.textContent = result.message || 'Error registering.';
+          message.textContent = result.message || 'Invalid credentials';
           message.style.color = 'var(--text)';
         }
       } catch (err) {
-        message.textContent = 'Request failed.';
+        message.textContent = 'Login request failed.';
         message.style.color = 'var(--text)';
       }
+    });
+  
+    toRegister?.addEventListener('click', () => {
+      window.location.href = '/register/register.html';
     });
   });

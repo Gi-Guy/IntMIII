@@ -9,35 +9,36 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 document.addEventListener('DOMContentLoaded', () => {
-    const form = document.getElementById('register-form');
+    const form = document.getElementById('login-form');
     const message = document.getElementById('message');
+    const toRegister = document.getElementById('to-register');
     form.addEventListener('submit', (e) => __awaiter(void 0, void 0, void 0, function* () {
         e.preventDefault();
         const formData = new FormData(form);
         const data = Object.fromEntries(formData.entries());
         try {
-            const res = yield fetch('/api/users/register', {
+            const res = yield fetch('/api/users/login', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(data)
             });
             const result = yield res.json();
             if (res.ok) {
-                message.textContent = 'Registration successful!';
+                message.textContent = 'Login successful!';
                 message.style.color = 'var(--text)';
-                form.reset();
-                setTimeout(() => {
-                    window.location.href = '/login/login.html';
-                }, 1000);
+                window.location.href = '/index.html';
             }
             else {
-                message.textContent = result.message || 'Error registering.';
+                message.textContent = result.message || 'Invalid credentials';
                 message.style.color = 'var(--text)';
             }
         }
         catch (err) {
-            message.textContent = 'Request failed.';
+            message.textContent = 'Login request failed.';
             message.style.color = 'var(--text)';
         }
     }));
+    toRegister === null || toRegister === void 0 ? void 0 : toRegister.addEventListener('click', () => {
+        window.location.href = '/register/register.html';
+    });
 });

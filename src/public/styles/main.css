@@ -63,4 +63,20 @@ form {
   margin-top: 1rem;
 }
 
+#to-register {
+  margin-top: 1rem;
+  background: transparent;
+  border: 1px solid var(--primary);
+  color: var(--text);
+  border-radius: var(--radius);
+  padding: 0.5rem;
+  cursor: pointer;
+  transition: background-color var(--transition);
+}
+
+#to-register:hover {
+  background-color: var(--primary);
+  color: var(--background);
+}
+
 /*# sourceMappingURL=main.css.map */

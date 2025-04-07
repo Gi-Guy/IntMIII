@@ -48,14 +48,6 @@
     width: 100%;
   }
   
-  // form {
-  //   max-width: 400px;
-  //   margin: auto;
-  //   display: flex;
-  //   flex-direction: column;
-  //   gap: 0.5rem;
-  // }
-
 form {
   background-color: var(--accent);
   border-radius: var(--radius);
@@ -70,4 +62,19 @@ form {
 #message {
   text-align: center;
   margin-top: 1rem;
+}
+#to-register {
+  margin-top: 1rem;
+  background: transparent;
+  border: 1px solid var(--primary);
+  color: var(--text);
+  border-radius: var(--radius);
+  padding: 0.5rem;
+  cursor: pointer;
+  transition: background-color var(--transition);
+}
+
+#to-register:hover {
+  background-color: var(--primary);
+  color: var(--background);
 }
