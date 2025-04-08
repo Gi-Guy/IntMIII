@@ -27,6 +27,7 @@ document.addEventListener('DOMContentLoaded', () => __awaiter(void 0, void 0, vo
         window.location.href = '/index.html';
     });
     let user = null;
+    let post = null;
     try {
         const meRes = yield fetch('/api/users/me', { credentials: 'include' });
         if (meRes.ok) {
@@ -34,7 +35,6 @@ document.addEventListener('DOMContentLoaded', () => __awaiter(void 0, void 0, vo
         }
     }
     catch (_a) { }
-    let post;
     try {
         const res = yield fetch(`/api/posts/${postId}`);
         post = yield res.json();
@@ -45,6 +45,15 @@ document.addEventListener('DOMContentLoaded', () => __awaiter(void 0, void 0, vo
     catch (_b) {
         titleEl.textContent = 'Failed to load post';
         return;
+    }
+    if (user && (user.id === post.author.id || user.isAdmin)) {
+        const editBtn = document.createElement('button');
+        editBtn.textContent = 'Edit Post';
+        editBtn.style.margin = '1rem auto';
+        editBtn.onclick = () => {
+            window.location.href = `/post/editPost.html?post=${post.id}`;
+        };
+        commentBtn.before(editBtn);
     }
     if (post.isLocked) {
         commentBtn.style.display = 'none';

@@ -40,6 +40,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   });
 
   let user: any = null;
+  let post: any = null;
 
   try {
     const meRes = await fetch('/api/users/me', { credentials: 'include' });
@@ -48,7 +49,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
   } catch {}
 
-  let post: Post;
   try {
     const res = await fetch(`/api/posts/${postId}`);
     post = await res.json();
@@ -60,7 +60,16 @@ document.addEventListener('DOMContentLoaded', async () => {
     titleEl.textContent = 'Failed to load post';
     return;
   }
-
+  if (user && (user.id === post.author.id || user.isAdmin)) {
+    const editBtn = document.createElement('button');
+    editBtn.textContent = 'Edit Post';
+    editBtn.style.margin = '1rem auto';
+    editBtn.onclick = () => {
+      window.location.href = `/post/editPost.html?post=${post.id}`;
+    };
+    commentBtn.before(editBtn);
+  }
+  
   if (post.isLocked) {
     commentBtn.style.display = 'none';
     commentFormContainer.innerHTML = `
