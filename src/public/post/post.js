@@ -79,8 +79,6 @@ document.addEventListener('DOMContentLoaded', () => __awaiter(void 0, void 0, vo
             }
         });
         const actionContainer = document.createElement('div');
-        // actionContainer.style.display = 'flex';
-        // actionContainer.style.gap = '1rem';
         actionContainer.append(editBtn, deleteBtn);
         commentBtn.before(actionContainer);
     }

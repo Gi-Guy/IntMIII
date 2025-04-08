@@ -26,6 +26,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   const leftButton = document.createElement('button');
   const rightButton = document.createElement('button');
+  const profileButton = document.createElement('button');
 
   let user: User | null = null;
 
@@ -37,13 +38,16 @@ document.addEventListener('DOMContentLoaded', async () => {
       leftButton.textContent = 'Create Post';
       leftButton.onclick = () => window.location.href = '/post/createPost.html';
 
+      profileButton.textContent = 'Profile';
+      profileButton.onclick = () => window.location.href = '/profile/profile.html';
+
       rightButton.textContent = 'Logout';
       rightButton.onclick = async () => {
         await fetch('/api/users/logout', { credentials: 'include' });
         location.reload();
       };
 
-      topBar.append(leftButton, rightButton);
+      topBar.append(leftButton, profileButton, rightButton);
     } else {
       const registerBtn = document.createElement('button');
       registerBtn.textContent = 'Register';

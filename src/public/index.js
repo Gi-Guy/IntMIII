@@ -16,6 +16,7 @@ document.addEventListener('DOMContentLoaded', () => __awaiter(void 0, void 0, vo
     topBar.style.marginBottom = '1.5rem';
     const leftButton = document.createElement('button');
     const rightButton = document.createElement('button');
+    const profileButton = document.createElement('button');
     let user = null;
     try {
         const userRes = yield fetch('/api/users/me', { credentials: 'include' });
@@ -23,12 +24,14 @@ document.addEventListener('DOMContentLoaded', () => __awaiter(void 0, void 0, vo
             user = yield userRes.json();
             leftButton.textContent = 'Create Post';
             leftButton.onclick = () => window.location.href = '/post/createPost.html';
+            profileButton.textContent = 'Profile';
+            profileButton.onclick = () => window.location.href = '/profile/profile.html';
             rightButton.textContent = 'Logout';
             rightButton.onclick = () => __awaiter(void 0, void 0, void 0, function* () {
                 yield fetch('/api/users/logout', { credentials: 'include' });
                 location.reload();
             });
-            topBar.append(leftButton, rightButton);
+            topBar.append(leftButton, profileButton, rightButton);
         }
         else {
             const registerBtn = document.createElement('button');
