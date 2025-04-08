@@ -13,6 +13,7 @@ exports.createPost = createPost;
 exports.getAllPosts = getAllPosts;
 exports.getPostById = getPostById;
 exports.deletePostById = deletePostById;
+exports.deletePost = deletePost;
 const post_model_1 = require("../models/post.model");
 const comment_model_1 = require("../models/comment.model");
 const user_model_1 = require("../models/user.model");
@@ -101,6 +102,28 @@ function deletePostById(req, res) {
             }
             yield post_model_1.PostModel.deleteOne({ id });
             res.status(200).json({ message: 'Post deleted successfully' });
+        }
+        catch (err) {
+            res.status(500).json({ message: 'Server error', error: err });
+        }
+    });
+}
+function deletePost(req, res) {
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            const post = yield post_model_1.PostModel.findOne({ id: req.params.id });
+            if (!post) {
+                res.status(404).json({ message: 'Post not found' });
+                return;
+            }
+            const user = req.user;
+            if (!post.author || post.author.id !== user.id && !user.isAdmin) {
+                res.status(403).json({ message: 'Forbidden' });
+                return;
+            }
+            yield comment_model_1.CommentModel.deleteMany({ postId: post.id });
+            yield post.deleteOne();
+            res.status(200).json({ message: 'Post deleted' });
         }
         catch (err) {
             res.status(500).json({ message: 'Server error', error: err });

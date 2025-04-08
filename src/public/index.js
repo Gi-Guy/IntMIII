@@ -16,10 +16,11 @@ document.addEventListener('DOMContentLoaded', () => __awaiter(void 0, void 0, vo
     topBar.style.marginBottom = '1.5rem';
     const leftButton = document.createElement('button');
     const rightButton = document.createElement('button');
+    let user = null;
     try {
         const userRes = yield fetch('/api/users/me', { credentials: 'include' });
         if (userRes.ok) {
-            const user = yield userRes.json();
+            user = yield userRes.json();
             leftButton.textContent = 'Create Post';
             leftButton.onclick = () => window.location.href = '/post/createPost.html';
             rightButton.textContent = 'Logout';
@@ -62,6 +63,27 @@ document.addEventListener('DOMContentLoaded', () => __awaiter(void 0, void 0, vo
             link.href = `post/post.html?post=${post.id}`;
             link.textContent = 'View Full Post';
             postDiv.append(title, details, link);
+            if (user && (user.id === post.author.id || user.isAdmin)) {
+                const deleteBtn = document.createElement('button');
+                deleteBtn.textContent = 'Delete Post';
+                deleteBtn.style.marginLeft = '1rem';
+                deleteBtn.onclick = () => __awaiter(void 0, void 0, void 0, function* () {
+                    const confirmDelete = confirm('Are you sure you want to delete this post?');
+                    if (!confirmDelete)
+                        return;
+                    const delRes = yield fetch(`/api/posts/${post.id}`, {
+                        method: 'DELETE',
+                        credentials: 'include'
+                    });
+                    if (delRes.ok) {
+                        postDiv.remove();
+                    }
+                    else {
+                        alert('Failed to delete post');
+                    }
+                });
+                postDiv.appendChild(deleteBtn);
+            }
             container.appendChild(postDiv);
         });
     }
