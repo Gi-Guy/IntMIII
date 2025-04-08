@@ -7,7 +7,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "sass": "sass src/public/styles/main.scss src/public/styles/main.css --watch",
     "build": "tsc && sass src/public/styles/main.scss src/public/styles/main.css",
-    "start": "npm run build && node src/app.js"
+    "start": "npm run build && node src/app.js",
+    "testV": "vitest"
   },
   "keywords": [],
   "author": "",
