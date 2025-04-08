@@ -102,6 +102,13 @@ document.addEventListener('DOMContentLoaded', () => __awaiter(void 0, void 0, vo
                     }
                 });
                 postDiv.appendChild(lockBtn);
+                const editBtn = document.createElement('button');
+                editBtn.textContent = 'Edit Post';
+                editBtn.style.marginLeft = '0.5rem';
+                editBtn.onclick = () => {
+                    window.location.href = `/post/editPost.html?post=${post.id}`;
+                };
+                postDiv.appendChild(editBtn);
             }
             container.appendChild(postDiv);
         });

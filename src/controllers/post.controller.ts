@@ -143,4 +143,27 @@ export async function toggleLockPost(req: Request, res: Response): Promise<void>
     res.status(500).json({ message: 'Server error', error: err });
   }
 }
+export async function updatePost(req: Request, res: Response): Promise<void> {
+  try {
+    const post = await PostModel.findOne({ id: req.params.id });
+    if (!post) {
+      res.status(404).json({ message: 'Post not found' });
+      return;
+    }
+
+    const user = (req as any).user;
+    if (!post.author || post.author.id !== user.id && !user.isAdmin) {
+      res.status(403).json({ message: 'Unauthorized' });
+      return;
+    }
+
+    post.title = req.body.title;
+    post.content = req.body.content;
+    await post.save();
+
+    res.status(200).json({ message: 'Post updated' });
+  } catch (err) {
+    res.status(500).json({ message: 'Server error', error: err });
+  }
+}
 

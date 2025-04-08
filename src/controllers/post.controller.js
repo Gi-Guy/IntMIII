@@ -15,6 +15,7 @@ exports.getPostById = getPostById;
 exports.deletePostById = deletePostById;
 exports.deletePost = deletePost;
 exports.toggleLockPost = toggleLockPost;
+exports.updatePost = updatePost;
 const post_model_1 = require("../models/post.model");
 const comment_model_1 = require("../models/comment.model");
 const comment_controller_1 = require("./comment.controller");
@@ -150,6 +151,29 @@ function toggleLockPost(req, res) {
             post.isLocked = req.body.isLocked;
             yield post.save();
             res.status(200).json({ message: 'Lock state updated' });
+        }
+        catch (err) {
+            res.status(500).json({ message: 'Server error', error: err });
+        }
+    });
+}
+function updatePost(req, res) {
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            const post = yield post_model_1.PostModel.findOne({ id: req.params.id });
+            if (!post) {
+                res.status(404).json({ message: 'Post not found' });
+                return;
+            }
+            const user = req.user;
+            if (!post.author || post.author.id !== user.id && !user.isAdmin) {
+                res.status(403).json({ message: 'Unauthorized' });
+                return;
+            }
+            post.title = req.body.title;
+            post.content = req.body.content;
+            yield post.save();
+            res.status(200).json({ message: 'Post updated' });
         }
         catch (err) {
             res.status(500).json({ message: 'Server error', error: err });

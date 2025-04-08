@@ -33,6 +33,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   commentFormContainer.id = 'comment-form-container';
   commentsContainer.before(commentFormContainer);
 
+  // Home button
   const homeBtn = document.getElementById('home-btn');
   homeBtn?.addEventListener('click', () => {
     window.location.href = '/index.html';

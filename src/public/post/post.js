@@ -21,6 +21,7 @@ document.addEventListener('DOMContentLoaded', () => __awaiter(void 0, void 0, vo
     const commentFormContainer = document.createElement('div');
     commentFormContainer.id = 'comment-form-container';
     commentsContainer.before(commentFormContainer);
+    // Home button
     const homeBtn = document.getElementById('home-btn');
     homeBtn === null || homeBtn === void 0 ? void 0 : homeBtn.addEventListener('click', () => {
         window.location.href = '/index.html';
