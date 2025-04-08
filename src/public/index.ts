@@ -33,7 +33,7 @@ type PostPreview = {
         const user: User = await userRes.json();
   
         leftButton.textContent = 'Create Post';
-        leftButton.onclick = () => window.location.href = '/createPost.html';
+        leftButton.onclick = () => window.location.href = '/post/createPost.html';
   
         
         rightButton.textContent = 'Logout';

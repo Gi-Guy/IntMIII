@@ -21,7 +21,7 @@ document.addEventListener('DOMContentLoaded', () => __awaiter(void 0, void 0, vo
         if (userRes.ok) {
             const user = yield userRes.json();
             leftButton.textContent = 'Create Post';
-            leftButton.onclick = () => window.location.href = '/createPost.html';
+            leftButton.onclick = () => window.location.href = '/post/createPost.html';
             rightButton.textContent = 'Logout';
             rightButton.onclick = () => __awaiter(void 0, void 0, void 0, function* () {
                 yield fetch('/api/users/logout', { credentials: 'include' });

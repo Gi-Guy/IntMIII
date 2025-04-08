@@ -14,13 +14,20 @@ exports.getAllPosts = getAllPosts;
 exports.getPostById = getPostById;
 exports.deletePostById = deletePostById;
 const post_model_1 = require("../models/post.model");
+const user_model_1 = require("../models/user.model");
 const crypto_1 = require("crypto");
 function createPost(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
+        var _a;
         try {
-            const user = req.user;
-            if (!user) {
+            const userId = (_a = req.user) === null || _a === void 0 ? void 0 : _a.id;
+            if (!userId) {
                 res.status(401).json({ message: 'Unauthorized' });
+                return;
+            }
+            const user = yield user_model_1.UserModel.findOne({ id: userId });
+            if (!user) {
+                res.status(404).json({ message: 'User not found' });
                 return;
             }
             const { title, content } = req.body;

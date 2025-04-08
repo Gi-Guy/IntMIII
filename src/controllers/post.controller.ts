@@ -1,13 +1,20 @@
 import { Request, Response } from 'express';
 import { PostModel } from '../models/post.model';
+import { UserModel } from '../models/user.model';
 import { Post } from '../types/post.type';
 import { randomUUID } from 'crypto';
 
 export async function createPost(req: Request, res: Response): Promise<void> {
   try {
-    const user = (req as any).user;
-    if (!user) {
+    const userId = (req as any).user?.id;
+    if (!userId) {
       res.status(401).json({ message: 'Unauthorized' });
+      return;
+    }
+
+    const user = await UserModel.findOne({ id: userId });
+    if (!user) {
+      res.status(404).json({ message: 'User not found' });
       return;
     }
 
@@ -26,10 +33,12 @@ export async function createPost(req: Request, res: Response): Promise<void> {
 
     await PostModel.create(post);
     res.status(201).json({ message: 'Post created successfully' });
+
   } catch (err) {
     res.status(500).json({ message: 'Server error', error: err });
   }
 }
+
 
 export async function getAllPosts(req: Request, res: Response): Promise<void> {
   try {
