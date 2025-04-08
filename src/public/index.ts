@@ -64,26 +64,26 @@ type PostPreview = {
       const posts: PostPreview[] = await res.json();
   
       posts
-        .sort((a, b) => b.createdAt - a.createdAt)
-        .forEach(post => {
-          const postDiv = document.createElement('div');
-          postDiv.className = 'post-preview';
-  
-          const title = document.createElement('h2');
-          title.textContent = post.title;
-          title.style.textAlign = 'center';
-  
-          const details = document.createElement('p');
-          details.textContent = `${new Date(post.createdAt).toLocaleString()} | ${post.commentCount} comments | by ${post.author.username}`;
-  
-          const link = document.createElement('a');
-        //   link.href = `/post/${post.id}.html`;
+      .sort((a, b) => b.createdAt - a.createdAt)
+      .forEach(post => {
+        const postDiv = document.createElement('section');
+        postDiv.className = 'post-preview';
+    
+        const title = document.createElement('h2');
+        title.textContent = post.title;
+        title.style.textAlign = 'center';
+    
+        const details = document.createElement('p');
+        details.className = 'meta';
+        details.textContent = `${new Date(post.createdAt).toLocaleString()} | ${post.commentCount ?? 0} comments | by ${post.author.username}`;
+    
+        const link = document.createElement('a');
         link.href = `post/post.html?post=${post.id}`;
-          link.textContent = 'View Full Post';
-  
-          postDiv.append(title, details, link);
-          container.appendChild(postDiv);
-        });
+        link.textContent = 'View Full Post';
+    
+        postDiv.append(title, details, link);
+        container.appendChild(postDiv);
+      });
     } catch (err) {
       container.textContent = 'Failed to load posts.';
     }

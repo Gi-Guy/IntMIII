@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { PostModel } from '../models/post.model';
+import { CommentModel } from '../models/comment.model';
 import { UserModel } from '../models/user.model';
 import { Post } from '../types/post.type';
 import { randomUUID } from 'crypto';
@@ -40,15 +41,20 @@ export async function createPost(req: Request, res: Response): Promise<void> {
 }
 
 
-export async function getAllPosts(req: Request, res: Response): Promise<void> {
+export async function getAllPosts(_: Request, res: Response): Promise<void> {
   try {
-    const posts = await PostModel.find().sort({ createdAt: -1 });
-    res.status(200).json(posts);
+    const posts = await PostModel.find().sort({ createdAt: -1 }).lean();
+
+    const enriched = await Promise.all(posts.map(async post => {
+      const count = await CommentModel.countDocuments({ postId: post.id });
+      return { ...post, commentCount: count };
+    }));
+
+    res.json(enriched);
   } catch (err) {
     res.status(500).json({ message: 'Server error', error: err });
   }
 }
-
 export async function getPostById(req: Request, res: Response): Promise<void> {
   try {
     const { id } = req.params;

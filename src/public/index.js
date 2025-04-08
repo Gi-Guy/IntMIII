@@ -49,15 +49,16 @@ document.addEventListener('DOMContentLoaded', () => __awaiter(void 0, void 0, vo
         posts
             .sort((a, b) => b.createdAt - a.createdAt)
             .forEach(post => {
-            const postDiv = document.createElement('div');
+            var _a;
+            const postDiv = document.createElement('section');
             postDiv.className = 'post-preview';
             const title = document.createElement('h2');
             title.textContent = post.title;
             title.style.textAlign = 'center';
             const details = document.createElement('p');
-            details.textContent = `${new Date(post.createdAt).toLocaleString()} | ${post.commentCount} comments | by ${post.author.username}`;
+            details.className = 'meta';
+            details.textContent = `${new Date(post.createdAt).toLocaleString()} | ${(_a = post.commentCount) !== null && _a !== void 0 ? _a : 0} comments | by ${post.author.username}`;
             const link = document.createElement('a');
-            //   link.href = `/post/${post.id}.html`;
             link.href = `post/post.html?post=${post.id}`;
             link.textContent = 'View Full Post';
             postDiv.append(title, details, link);

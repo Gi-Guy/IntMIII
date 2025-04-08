@@ -14,6 +14,7 @@ exports.getAllPosts = getAllPosts;
 exports.getPostById = getPostById;
 exports.deletePostById = deletePostById;
 const post_model_1 = require("../models/post.model");
+const comment_model_1 = require("../models/comment.model");
 const user_model_1 = require("../models/user.model");
 const crypto_1 = require("crypto");
 function createPost(req, res) {
@@ -49,11 +50,15 @@ function createPost(req, res) {
         }
     });
 }
-function getAllPosts(req, res) {
+function getAllPosts(_, res) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            const posts = yield post_model_1.PostModel.find().sort({ createdAt: -1 });
-            res.status(200).json(posts);
+            const posts = yield post_model_1.PostModel.find().sort({ createdAt: -1 }).lean();
+            const enriched = yield Promise.all(posts.map((post) => __awaiter(this, void 0, void 0, function* () {
+                const count = yield comment_model_1.CommentModel.countDocuments({ postId: post.id });
+                return Object.assign(Object.assign({}, post), { commentCount: count });
+            })));
+            res.json(enriched);
         }
         catch (err) {
             res.status(500).json({ message: 'Server error', error: err });
