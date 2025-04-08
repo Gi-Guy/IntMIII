@@ -1,9 +1,9 @@
 
 import { describe, it, expect, beforeAll, afterAll } from 'vitest';
 import request from 'supertest';
-import app from '../src/app';
+import app from '../src/app.ts';
 import mongoose from 'mongoose';
-import { UserModel } from '../src/models/user.model';
+import { UserModel } from '../src/models/user.model.ts';
 
 beforeAll(async () => {
   await mongoose.connect('mongodb://localhost:27017/blog-test');

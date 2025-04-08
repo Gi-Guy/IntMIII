@@ -1,9 +1,9 @@
 import { describe, it, expect, beforeAll, afterAll } from 'vitest';
 import request from 'supertest';
-import app from '../src/app';
+import app from '../src/app.ts';
 import mongoose from 'mongoose';
-import { PostModel } from '../src/models/post.model';
-import { UserModel } from '../src/models/user.model';
+import { PostModel } from '../src/models/post.model.ts';
+import { UserModel } from '../src/models/user.model.ts';
 
 let token = '';
 
