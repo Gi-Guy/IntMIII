@@ -27,10 +27,6 @@ document.addEventListener('DOMContentLoaded', () => __awaiter(void 0, void 0, vo
                 yield fetch('/api/users/logout', { credentials: 'include' });
                 location.reload();
             });
-            // rightButton.onclick = async () => {
-            //   document.cookie = 'token=; Max-Age=0';
-            //   location.reload();
-            // };
             topBar.append(leftButton, rightButton);
         }
         else {
@@ -61,7 +57,8 @@ document.addEventListener('DOMContentLoaded', () => __awaiter(void 0, void 0, vo
             const details = document.createElement('p');
             details.textContent = `${new Date(post.createdAt).toLocaleString()} | ${post.commentCount} comments | by ${post.author.username}`;
             const link = document.createElement('a');
-            link.href = `/post/${post.id}.html`;
+            //   link.href = `/post/${post.id}.html`;
+            link.href = `post/post.html?post=${post.id}`;
             link.textContent = 'View Full Post';
             postDiv.append(title, details, link);
             container.appendChild(postDiv);

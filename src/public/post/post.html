@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>View Post</title>
+  <link rel="stylesheet" href="/styles/main.css">
+</head>
+<body>
+  <section class="post-container">
+    <div class="post-header">
+      <h2 id="post-title">Post Title</h2>
+      <p id="post-meta">By <span id="post-author"></span> | <span id="post-date"></span></p>
+    </div>
+    <div class="post-body">
+      <p id="post-content"></p>
+    </div>
+  </section>
+
+  <div style="text-align:center; margin-top: 1rem;">
+    <button id="add-comment">הוסף תגובה</button>
+  </div>
+
+  <section class="comment-section" id="comments-container">
+  </section>
+
+  <script src="./post.js" type="module"></script>
+</body>
+</html>
