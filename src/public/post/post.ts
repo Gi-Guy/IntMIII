@@ -31,8 +31,79 @@ document.addEventListener('DOMContentLoaded', async () => {
   const commentsContainer = document.getElementById('comments-container')!;
   const commentBtn = document.getElementById('add-comment')!;
 
+  const commentFormContainer = document.createElement('div');
+  commentFormContainer.id = 'comment-form-container';
+  commentFormContainer.style.display = 'none';
+  commentsContainer.before(commentFormContainer);
+
+  let user: any = null;
+
+  try {
+    const meRes = await fetch('/api/users/me', { credentials: 'include' });
+    if (meRes.ok) {
+      user = await meRes.json();
+    }
+  } catch {
+    // ignore
+  }
+
   commentBtn.addEventListener('click', () => {
-    window.location.href = `/comments/addComment.html?post=${postId}`;
+    commentBtn.style.display = 'none';
+
+    if (!user) {
+      commentFormContainer.innerHTML = `
+        <div class="comment-box" style="max-width: 600px; margin: auto; text-align: center;">
+          <p>Please log in to leave a comment.</p>
+          <button onclick="location.href='/login/login.html'">Login</button>
+        </div>
+      `;
+    } else {
+      commentFormContainer.innerHTML = `
+        <form id="inline-comment-form">
+          <textarea name="content" placeholder="Write your comment..." required rows="4"></textarea>
+          <button type="submit">Submit</button>
+          <p id="comment-message"></p>
+        </form>
+      `;
+    }
+    commentFormContainer.style.display = 'block';
+  });
+
+  document.addEventListener('submit', async (e) => {
+    const form = e.target as HTMLFormElement;
+    if (form.id !== 'inline-comment-form') return;
+    e.preventDefault();
+
+    const content = (form.elements.namedItem('content') as HTMLTextAreaElement).value;
+    const messageEl = document.getElementById('comment-message')!;
+
+    try {
+      const res = await fetch('/api/comments', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ content, postId }),
+        credentials: 'include'
+      });
+
+      const result = await res.json();
+
+      if (res.ok) {
+        const commentDiv = document.createElement('div');
+        commentDiv.className = 'comment-box';
+        commentDiv.innerHTML = `<p><strong>${result.comment.author.username}</strong> | ${new Date(result.comment.createdAt).toLocaleString()}</p><p>${result.comment.content}</p>`;
+        commentsContainer.prepend(commentDiv);
+
+        form.reset();
+        messageEl.textContent = 'Comment added!';
+        messageEl.style.color = 'var(--accent)';
+      } else {
+        messageEl.textContent = result.message || 'Error adding comment';
+        messageEl.style.color = 'var(--text)';
+      }
+    } catch {
+      messageEl.textContent = 'Request failed';
+      messageEl.style.color = 'var(--text)';
+    }
   });
 
   try {
