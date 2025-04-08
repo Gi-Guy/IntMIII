@@ -1,4 +1,3 @@
-
 document.addEventListener('DOMContentLoaded', async () => {
     const usernameEl = document.getElementById('username')!;
     const firstNameEl = document.getElementById('firstName')!;
@@ -9,6 +8,13 @@ document.addEventListener('DOMContentLoaded', async () => {
     const commentCountEl = document.getElementById('commentCount')!;
     const postsContainer = document.getElementById('user-posts')!;
     const homeBtn = document.getElementById('home-btn')!;
+  
+    const aside = homeBtn.closest('aside') as HTMLElement;
+    if (aside) {
+      aside.style.height = 'min-content';
+      aside.style.alignSelf = 'flex-start';
+      aside.style.flexShrink = '0';
+    }
   
     homeBtn.onclick = () => location.href = '/index.html';
   

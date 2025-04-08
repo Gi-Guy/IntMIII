@@ -5,10 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>User Profile</title>
   <link rel="stylesheet" href="/styles/main.css">
+  <link rel="stylesheet" href="/styles/profile.css">
 </head>
 <body>
-  <main class="region" style="display: flex; flex-wrap: wrap; gap: 2rem;">
-    <aside style="flex: 1 1 300px; background: var(--accent); padding: 1rem; border-radius: 1rem; color: var(--text);">
+  <main class="region profile-wrapper">
+    <aside class="profile-info">
       <h2>Your Profile</h2>
       <p><strong>Username:</strong> <span id="username"></span></p>
       <p><strong>First Name:</strong> <span id="firstName"></span></p>
@@ -20,8 +21,8 @@
       <button id="home-btn">Home</button>
     </aside>
 
-    <section style="flex: 2 1 600px; display: flex; flex-direction: column; gap: 1.5rem;" id="user-posts">
-      <h2 style="margin-bottom: 0.5rem;">Your Posts</h2>
+    <section class="profile-posts" id="user-posts">
+      <h2>Your Posts</h2>
     </section>
   </main>
   <script type="module" src="./profile.js"></script>

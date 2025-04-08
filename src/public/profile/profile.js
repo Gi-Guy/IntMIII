@@ -18,6 +18,12 @@ document.addEventListener('DOMContentLoaded', () => __awaiter(void 0, void 0, vo
     const commentCountEl = document.getElementById('commentCount');
     const postsContainer = document.getElementById('user-posts');
     const homeBtn = document.getElementById('home-btn');
+    const aside = homeBtn.closest('aside');
+    if (aside) {
+        aside.style.height = 'min-content';
+        aside.style.alignSelf = 'flex-start';
+        aside.style.flexShrink = '0';
+    }
     homeBtn.onclick = () => location.href = '/index.html';
     let user = null;
     try {

@@ -1,0 +1,42 @@
+:root {
+    --profile-gap: 2rem;
+    --profile-padding: 1rem;
+    --profile-radius: 1rem;
+  }
+  
+  .profile-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--profile-gap);
+  }
+  
+  .profile-info {
+    flex: 1 1 300px;
+    background: var(--accent);
+    padding: var(--profile-padding);
+    border-radius: var(--profile-radius);
+    color: var(--text);
+    align-self: flex-start;
+    height: min-content;
+  }
+  
+  .profile-posts {
+    flex: 2 1 600px;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    color: var(--text);
+  }
+  
+  .profile-posts section {
+    background: var(--primary);
+    // padding: var(--profile-padding);
+    padding: 1rem;
+    border-radius: var(--profile-radius);
+  }
+  
+  .profile-posts button {
+    margin-top: 0.5rem;
+    margin-right: 0.5rem;
+  }
+  
