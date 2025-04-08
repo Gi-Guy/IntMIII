@@ -18,6 +18,7 @@ type User = {
 
 document.addEventListener('DOMContentLoaded', async () => {
   const container = document.getElementById('posts-container') as HTMLElement;
+  container.className = 'post-wrapper';
 
   const topBar = document.createElement('div');
   topBar.style.display = 'flex';
@@ -69,78 +70,72 @@ document.addEventListener('DOMContentLoaded', async () => {
     const res = await fetch('/api/posts');
     const posts: PostPreview[] = await res.json();
 
-    posts
-      .sort((a, b) => b.createdAt - a.createdAt)
-      .forEach(post => {
-        const postDiv = document.createElement('section');
-        postDiv.className = 'post-preview';
+    posts.sort((a, b) => b.createdAt - a.createdAt);
 
-        const title = document.createElement('h2');
-        title.textContent = post.title;
-        title.style.textAlign = 'center';
+    posts.forEach(post => {
+      const postDiv = document.createElement('section');
+      postDiv.className = 'post-preview';
 
-        const details = document.createElement('p');
-        details.className = 'meta';
-        details.textContent = `${new Date(post.createdAt).toLocaleString()} | ${post.commentCount ?? 0} comments | by ${post.author.username}`;
+      const title = document.createElement('h2');
+      title.textContent = post.title;
+      title.style.textAlign = 'center';
 
-        const link = document.createElement('a');
-        link.href = `post/post.html?post=${post.id}`;
-        link.textContent = 'View Full Post';
+      const details = document.createElement('p');
+      details.className = 'meta';
+      details.textContent = `${new Date(post.createdAt).toLocaleString()} | ${post.commentCount ?? 0} comments | by ${post.author.username}`;
 
-        postDiv.append(title, details, link);
+      const viewBtn = document.createElement('button');
+      viewBtn.textContent = 'View';
+      viewBtn.onclick = () => location.href = `post/post.html?post=${post.id}`;
 
-        if (user && (user.id === post.author.id || user.isAdmin)) {
-          const deleteBtn = document.createElement('button');
-          deleteBtn.textContent = 'Delete Post';
-          deleteBtn.style.marginLeft = '1rem';
-          deleteBtn.onclick = async () => {
-            const confirmDelete = confirm('Are you sure you want to delete this post?');
-            if (!confirmDelete) return;
+      const buttons = document.createElement('div');
+      buttons.appendChild(viewBtn);
 
-            const delRes = await fetch(`/api/posts/${post.id}`, {
-              method: 'DELETE',
-              credentials: 'include'
-            });
+      if (user && (user.id === post.author.id || user.isAdmin)) {
+        const deleteBtn = document.createElement('button');
+        deleteBtn.textContent = 'Delete';
+        deleteBtn.onclick = async () => {
+          const confirmed = confirm('Are you sure you want to delete this post?');
+          if (!confirmed) return;
 
-            if (delRes.ok) {
-              postDiv.remove();
-            } else {
-              alert('Failed to delete post');
-            }
-          };
-          postDiv.appendChild(deleteBtn);
+          const delRes = await fetch(`/api/posts/${post.id}`, {
+            method: 'DELETE',
+            credentials: 'include'
+          });
 
-          const lockBtn = document.createElement('button');
-          lockBtn.textContent = post.isLocked ? 'Unlock Post' : 'Lock Post';
-          lockBtn.style.marginLeft = '0.5rem';
-          lockBtn.onclick = async () => {
-            const lockRes = await fetch(`/api/posts/${post.id}/lock`, {
-              method: 'PUT',
-              headers: { 'Content-Type': 'application/json' },
-              credentials: 'include',
-              body: JSON.stringify({ isLocked: !post.isLocked })
-            });
+          if (delRes.ok) {
+            postDiv.remove();
+          } else {
+            alert('Failed to delete post');
+          }
+        };
 
-            if (lockRes.ok) {
-              post.isLocked = !post.isLocked;
-              lockBtn.textContent = post.isLocked ? 'Unlock Post' : 'Lock Post';
-            } else {
-              alert('Failed to update lock status');
-            }
-          };
-          postDiv.appendChild(lockBtn);
+        const lockBtn = document.createElement('button');
+        lockBtn.textContent = post.isLocked ? 'Unlock' : 'Lock';
+        lockBtn.onclick = async () => {
+          const res = await fetch(`/api/posts/${post.id}/lock`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            credentials: 'include',
+            body: JSON.stringify({ isLocked: !post.isLocked })
+          });
 
-          const editBtn = document.createElement('button');
-          editBtn.textContent = 'Edit Post';
-          editBtn.style.marginLeft = '0.5rem';
-          editBtn.onclick = () => {
-            window.location.href = `/post/editPost.html?post=${post.id}`;
-          };
-          postDiv.appendChild(editBtn);
-        }
+          if (res.ok) {
+            post.isLocked = !post.isLocked;
+            lockBtn.textContent = post.isLocked ? 'Unlock' : 'Lock';
+          }
+        };
 
-        container.appendChild(postDiv);
-      });
+        const editBtn = document.createElement('button');
+        editBtn.textContent = 'Edit';
+        editBtn.onclick = () => location.href = `/post/editPost.html?post=${post.id}`;
+
+        buttons.append(editBtn, lockBtn, deleteBtn);
+      }
+
+      postDiv.append(title, details, buttons);
+      container.appendChild(postDiv);
+    });
   } catch (err) {
     container.textContent = 'Failed to load posts.';
   }

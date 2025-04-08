@@ -124,15 +124,32 @@ input, select, textarea {
   font-weight: bold;
   margin-bottom: 0.5rem;
 }
-.post-preview {
-  background-color: var(--primary);
-  color: var(--text);
-  border-radius: var(--radius);
-  padding: 1rem;
-  margin-bottom: 1rem;
-  box-shadow: 0 0 4px rgba(0, 0, 0, 0.4);
-  transition: background-color 0.3s;
+.post-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  align-items: center;
 }
+.post-preview {
+  background: var(--primary);
+  padding: var(--padding);
+  border-radius: var(--radius);
+  width: 100%;
+  max-width: var(--post-max-width);
+}
+.post-preview button {
+  margin-top: 0.5rem;
+  margin-right: 0.5rem;
+}
+// .post-preview {
+//   background-color: var(--primary);
+//   color: var(--text);
+//   border-radius: var(--radius);
+//   padding: 1rem;
+//   margin-bottom: 1rem;
+//   box-shadow: 0 0 4px rgba(0, 0, 0, 0.4);
+//   transition: background-color 0.3s;
+// }
 
 .post-preview h3 {
   margin-top: 0;

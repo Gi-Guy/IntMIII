@@ -10,6 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 document.addEventListener('DOMContentLoaded', () => __awaiter(void 0, void 0, void 0, function* () {
     const container = document.getElementById('posts-container');
+    container.className = 'post-wrapper';
     const topBar = document.createElement('div');
     topBar.style.display = 'flex';
     topBar.style.justifyContent = 'space-between';
@@ -50,9 +51,8 @@ document.addEventListener('DOMContentLoaded', () => __awaiter(void 0, void 0, vo
     try {
         const res = yield fetch('/api/posts');
         const posts = yield res.json();
-        posts
-            .sort((a, b) => b.createdAt - a.createdAt)
-            .forEach(post => {
+        posts.sort((a, b) => b.createdAt - a.createdAt);
+        posts.forEach(post => {
             var _a;
             const postDiv = document.createElement('section');
             postDiv.className = 'post-preview';
@@ -62,17 +62,17 @@ document.addEventListener('DOMContentLoaded', () => __awaiter(void 0, void 0, vo
             const details = document.createElement('p');
             details.className = 'meta';
             details.textContent = `${new Date(post.createdAt).toLocaleString()} | ${(_a = post.commentCount) !== null && _a !== void 0 ? _a : 0} comments | by ${post.author.username}`;
-            const link = document.createElement('a');
-            link.href = `post/post.html?post=${post.id}`;
-            link.textContent = 'View Full Post';
-            postDiv.append(title, details, link);
+            const viewBtn = document.createElement('button');
+            viewBtn.textContent = 'View';
+            viewBtn.onclick = () => location.href = `post/post.html?post=${post.id}`;
+            const buttons = document.createElement('div');
+            buttons.appendChild(viewBtn);
             if (user && (user.id === post.author.id || user.isAdmin)) {
                 const deleteBtn = document.createElement('button');
-                deleteBtn.textContent = 'Delete Post';
-                deleteBtn.style.marginLeft = '1rem';
+                deleteBtn.textContent = 'Delete';
                 deleteBtn.onclick = () => __awaiter(void 0, void 0, void 0, function* () {
-                    const confirmDelete = confirm('Are you sure you want to delete this post?');
-                    if (!confirmDelete)
+                    const confirmed = confirm('Are you sure you want to delete this post?');
+                    if (!confirmed)
                         return;
                     const delRes = yield fetch(`/api/posts/${post.id}`, {
                         method: 'DELETE',
@@ -85,34 +85,26 @@ document.addEventListener('DOMContentLoaded', () => __awaiter(void 0, void 0, vo
                         alert('Failed to delete post');
                     }
                 });
-                postDiv.appendChild(deleteBtn);
                 const lockBtn = document.createElement('button');
-                lockBtn.textContent = post.isLocked ? 'Unlock Post' : 'Lock Post';
-                lockBtn.style.marginLeft = '0.5rem';
+                lockBtn.textContent = post.isLocked ? 'Unlock' : 'Lock';
                 lockBtn.onclick = () => __awaiter(void 0, void 0, void 0, function* () {
-                    const lockRes = yield fetch(`/api/posts/${post.id}/lock`, {
+                    const res = yield fetch(`/api/posts/${post.id}/lock`, {
                         method: 'PUT',
                         headers: { 'Content-Type': 'application/json' },
                         credentials: 'include',
                         body: JSON.stringify({ isLocked: !post.isLocked })
                     });
-                    if (lockRes.ok) {
+                    if (res.ok) {
                         post.isLocked = !post.isLocked;
-                        lockBtn.textContent = post.isLocked ? 'Unlock Post' : 'Lock Post';
-                    }
-                    else {
-                        alert('Failed to update lock status');
+                        lockBtn.textContent = post.isLocked ? 'Unlock' : 'Lock';
                     }
                 });
-                postDiv.appendChild(lockBtn);
                 const editBtn = document.createElement('button');
-                editBtn.textContent = 'Edit Post';
-                editBtn.style.marginLeft = '0.5rem';
-                editBtn.onclick = () => {
-                    window.location.href = `/post/editPost.html?post=${post.id}`;
-                };
-                postDiv.appendChild(editBtn);
+                editBtn.textContent = 'Edit';
+                editBtn.onclick = () => location.href = `/post/editPost.html?post=${post.id}`;
+                buttons.append(editBtn, lockBtn, deleteBtn);
             }
+            postDiv.append(title, details, buttons);
             container.appendChild(postDiv);
         });
     }
