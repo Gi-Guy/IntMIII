@@ -2,7 +2,11 @@
 document.addEventListener('DOMContentLoaded', () => {
     const form = document.getElementById('create-post-form') as HTMLFormElement;
     const message = document.getElementById('message') as HTMLParagraphElement;
-  
+    
+    const homeBtn = document.getElementById('home-btn');
+      homeBtn?.addEventListener('click', () => {
+      window.location.href = '/index.html';
+    });
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
   

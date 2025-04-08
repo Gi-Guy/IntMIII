@@ -11,6 +11,10 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 document.addEventListener('DOMContentLoaded', () => {
     const form = document.getElementById('create-post-form');
     const message = document.getElementById('message');
+    const homeBtn = document.getElementById('home-btn');
+    homeBtn === null || homeBtn === void 0 ? void 0 : homeBtn.addEventListener('click', () => {
+        window.location.href = '/index.html';
+    });
     form.addEventListener('submit', (e) => __awaiter(void 0, void 0, void 0, function* () {
         e.preventDefault();
         const formData = new FormData(form);

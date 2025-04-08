@@ -1,5 +1,4 @@
 "use strict";
-// public/post.ts
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -23,6 +22,10 @@ document.addEventListener('DOMContentLoaded', () => __awaiter(void 0, void 0, vo
     commentFormContainer.id = 'comment-form-container';
     commentFormContainer.style.display = 'none';
     commentsContainer.before(commentFormContainer);
+    const homeBtn = document.getElementById('home-btn');
+    homeBtn === null || homeBtn === void 0 ? void 0 : homeBtn.addEventListener('click', () => {
+        window.location.href = '/index.html';
+    });
     let user = null;
     try {
         const meRes = yield fetch('/api/users/me', { credentials: 'include' });
@@ -31,7 +34,6 @@ document.addEventListener('DOMContentLoaded', () => __awaiter(void 0, void 0, vo
         }
     }
     catch (_a) {
-        // ignore
     }
     commentBtn.addEventListener('click', () => {
         commentBtn.style.display = 'none';

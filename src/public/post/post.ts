@@ -1,6 +1,4 @@
-// public/post.ts
 
-// Renamed to avoid conflict with built-in DOM type 'Comment'
 type CommentData = {
   id: string;
   content: string;
@@ -36,6 +34,10 @@ document.addEventListener('DOMContentLoaded', async () => {
   commentFormContainer.style.display = 'none';
   commentsContainer.before(commentFormContainer);
 
+   const homeBtn = document.getElementById('home-btn');
+  homeBtn?.addEventListener('click', () => {
+    window.location.href = '/index.html';
+  });
   let user: any = null;
 
   try {
@@ -44,7 +46,6 @@ document.addEventListener('DOMContentLoaded', async () => {
       user = await meRes.json();
     }
   } catch {
-    // ignore
   }
 
   commentBtn.addEventListener('click', () => {
