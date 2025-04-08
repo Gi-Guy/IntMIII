@@ -16,6 +16,7 @@ exports.deletePostById = deletePostById;
 exports.deletePost = deletePost;
 const post_model_1 = require("../models/post.model");
 const comment_model_1 = require("../models/comment.model");
+const comment_controller_1 = require("./comment.controller");
 const user_model_1 = require("../models/user.model");
 const crypto_1 = require("crypto");
 function createPost(req, res) {
@@ -121,7 +122,8 @@ function deletePost(req, res) {
                 res.status(403).json({ message: 'Forbidden' });
                 return;
             }
-            yield comment_model_1.CommentModel.deleteMany({ postId: post.id });
+            //await CommentModel.deleteMany({ postId: post.id });
+            yield (0, comment_controller_1.deleteCommentsByPostId)(post.id);
             yield post.deleteOne();
             res.status(200).json({ message: 'Post deleted' });
         }

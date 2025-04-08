@@ -13,6 +13,7 @@ exports.createComment = createComment;
 exports.getCommentsByPostId = getCommentsByPostId;
 exports.deleteComment = deleteComment;
 exports.updateComment = updateComment;
+exports.deleteCommentsByPostId = deleteCommentsByPostId;
 const comment_model_1 = require("../models/comment.model");
 const user_model_1 = require("../models/user.model");
 const post_model_1 = require("../models/post.model");
@@ -132,5 +133,10 @@ function updateComment(req, res) {
         catch (err) {
             res.status(500).json({ message: 'Server error', error: err });
         }
+    });
+}
+function deleteCommentsByPostId(postId) {
+    return __awaiter(this, void 0, void 0, function* () {
+        yield comment_model_1.CommentModel.deleteMany({ postId });
     });
 }

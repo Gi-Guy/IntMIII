@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import { PostModel } from '../models/post.model';
 import { CommentModel } from '../models/comment.model';
+import { deleteCommentsByPostId } from './comment.controller';
 import { UserModel } from '../models/user.model';
 import { Post } from '../types/post.type';
 import { randomUUID } from 'crypto';
@@ -110,7 +111,8 @@ export async function deletePost(req: Request, res: Response): Promise<void> {
       return;
     }
 
-    await CommentModel.deleteMany({ postId: post.id });
+    //await CommentModel.deleteMany({ postId: post.id });
+    await deleteCommentsByPostId(post.id);
     await post.deleteOne();
 
     res.status(200).json({ message: 'Post deleted' });

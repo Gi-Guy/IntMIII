@@ -128,3 +128,6 @@ export async function updateComment(req: Request, res: Response): Promise<void> 
     res.status(500).json({ message: 'Server error', error: err });
   }
 }
+export async function deleteCommentsByPostId(postId: string): Promise<void> {
+  await CommentModel.deleteMany({ postId });
+}
