@@ -46,6 +46,7 @@ document.addEventListener('DOMContentLoaded', () => __awaiter(void 0, void 0, vo
         titleEl.textContent = 'Failed to load post';
         return;
     }
+    //edit and delete post button
     if (user && (user.id === post.author.id || user.isAdmin)) {
         const editBtn = document.createElement('button');
         editBtn.textContent = 'Edit Post';
@@ -53,7 +54,35 @@ document.addEventListener('DOMContentLoaded', () => __awaiter(void 0, void 0, vo
         editBtn.onclick = () => {
             window.location.href = `/post/editPost.html?post=${post.id}`;
         };
-        commentBtn.before(editBtn);
+        const deleteBtn = document.createElement('button');
+        deleteBtn.textContent = 'Delete Post';
+        deleteBtn.style.margin = '1rem auto 1rem 0.5rem';
+        deleteBtn.onclick = () => __awaiter(void 0, void 0, void 0, function* () {
+            const confirmDelete = confirm('Are you sure you want to delete this post?');
+            if (!confirmDelete)
+                return;
+            try {
+                const res = yield fetch(`/api/posts/${post.id}`, {
+                    method: 'DELETE',
+                    credentials: 'include'
+                });
+                if (res.ok) {
+                    alert('Post deleted successfully');
+                    window.location.href = '/index.html';
+                }
+                else {
+                    alert('Failed to delete post');
+                }
+            }
+            catch (_a) {
+                alert('Error deleting post');
+            }
+        });
+        const actionContainer = document.createElement('div');
+        // actionContainer.style.display = 'flex';
+        // actionContainer.style.gap = '1rem';
+        actionContainer.append(editBtn, deleteBtn);
+        commentBtn.before(actionContainer);
     }
     if (post.isLocked) {
         commentBtn.style.display = 'none';
