@@ -83,6 +83,25 @@ document.addEventListener('DOMContentLoaded', () => __awaiter(void 0, void 0, vo
                     }
                 });
                 postDiv.appendChild(deleteBtn);
+                const lockBtn = document.createElement('button');
+                lockBtn.textContent = post.isLocked ? 'Unlock Post' : 'Lock Post';
+                lockBtn.style.marginLeft = '0.5rem';
+                lockBtn.onclick = () => __awaiter(void 0, void 0, void 0, function* () {
+                    const lockRes = yield fetch(`/api/posts/${post.id}/lock`, {
+                        method: 'PUT',
+                        headers: { 'Content-Type': 'application/json' },
+                        credentials: 'include',
+                        body: JSON.stringify({ isLocked: !post.isLocked })
+                    });
+                    if (lockRes.ok) {
+                        post.isLocked = !post.isLocked;
+                        lockBtn.textContent = post.isLocked ? 'Unlock Post' : 'Lock Post';
+                    }
+                    else {
+                        alert('Failed to update lock status');
+                    }
+                });
+                postDiv.appendChild(lockBtn);
             }
             container.appendChild(postDiv);
         });

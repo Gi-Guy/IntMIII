@@ -3,6 +3,7 @@ type PostPreview = {
   title: string;
   createdAt: number;
   commentCount: number;
+  isLocked: boolean;
   author: {
     username: string;
     id: string;
@@ -104,6 +105,26 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
           };
           postDiv.appendChild(deleteBtn);
+
+          const lockBtn = document.createElement('button');
+          lockBtn.textContent = post.isLocked ? 'Unlock Post' : 'Lock Post';
+          lockBtn.style.marginLeft = '0.5rem';
+          lockBtn.onclick = async () => {
+            const lockRes = await fetch(`/api/posts/${post.id}/lock`, {
+              method: 'PUT',
+              headers: { 'Content-Type': 'application/json' },
+              credentials: 'include',
+              body: JSON.stringify({ isLocked: !post.isLocked })
+            });
+
+            if (lockRes.ok) {
+              post.isLocked = !post.isLocked;
+              lockBtn.textContent = post.isLocked ? 'Unlock Post' : 'Lock Post';
+            } else {
+              alert('Failed to update lock status');
+            }
+          };
+          postDiv.appendChild(lockBtn);
         }
 
         container.appendChild(postDiv);

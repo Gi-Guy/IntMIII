@@ -20,7 +20,6 @@ document.addEventListener('DOMContentLoaded', () => __awaiter(void 0, void 0, vo
     const commentBtn = document.getElementById('add-comment');
     const commentFormContainer = document.createElement('div');
     commentFormContainer.id = 'comment-form-container';
-    commentFormContainer.style.display = 'none';
     commentsContainer.before(commentFormContainer);
     const homeBtn = document.getElementById('home-btn');
     homeBtn === null || homeBtn === void 0 ? void 0 : homeBtn.addEventListener('click', () => {
@@ -33,29 +32,49 @@ document.addEventListener('DOMContentLoaded', () => __awaiter(void 0, void 0, vo
             user = yield meRes.json();
         }
     }
-    catch (_a) {
+    catch (_a) { }
+    let post;
+    try {
+        const res = yield fetch(`/api/posts/${postId}`);
+        post = yield res.json();
+        titleEl.textContent = post.title;
+        contentEl.textContent = post.content;
+        metaEl.innerHTML = `By <strong>${post.author.username}</strong> | ${new Date(post.createdAt).toLocaleString()}`;
     }
-    commentBtn.addEventListener('click', () => {
+    catch (_b) {
+        titleEl.textContent = 'Failed to load post';
+        return;
+    }
+    if (post.isLocked) {
         commentBtn.style.display = 'none';
-        if (!user) {
-            commentFormContainer.innerHTML = `
-        <div class="comment-box" style="max-width: 600px; margin: auto; text-align: center;">
-          <p>Please log in to leave a comment.</p>
-          <button onclick="location.href='/login/login.html'">Login</button>
-        </div>
-      `;
-        }
-        else {
-            commentFormContainer.innerHTML = `
-        <form id="inline-comment-form">
-          <textarea name="content" placeholder="Write your comment..." required rows="4"></textarea>
-          <button type="submit">Submit</button>
-          <p id="comment-message"></p>
-        </form>
-      `;
-        }
-        commentFormContainer.style.display = 'block';
-    });
+        commentFormContainer.innerHTML = `
+      <div class="comment-box" style="max-width: 600px; margin: auto; text-align: center;">
+        <p>This post is locked for new comments.</p>
+      </div>
+    `;
+    }
+    else {
+        commentBtn.addEventListener('click', () => {
+            commentBtn.style.display = 'none';
+            if (!user) {
+                commentFormContainer.innerHTML = `
+          <div class="comment-box" style="max-width: 600px; margin: auto; text-align: center;">
+            <p>Please log in to leave a comment.</p>
+            <button onclick="location.href='/login/login.html'">Login</button>
+          </div>
+        `;
+            }
+            else {
+                commentFormContainer.innerHTML = `
+          <form id="inline-comment-form">
+            <textarea name="content" placeholder="Write your comment..." required rows="4"></textarea>
+            <button type="submit">Submit</button>
+            <p id="comment-message"></p>
+          </form>
+        `;
+            }
+        });
+    }
     document.addEventListener('submit', (e) => __awaiter(void 0, void 0, void 0, function* () {
         const form = e.target;
         if (form.id !== 'inline-comment-form')
@@ -90,16 +109,6 @@ document.addEventListener('DOMContentLoaded', () => __awaiter(void 0, void 0, vo
             messageEl.style.color = 'var(--text)';
         }
     }));
-    try {
-        const res = yield fetch(`/api/posts/${postId}`);
-        const post = yield res.json();
-        titleEl.textContent = post.title;
-        contentEl.textContent = post.content;
-        metaEl.innerHTML = `By <strong>${post.author.username}</strong> | ${new Date(post.createdAt).toLocaleString()}`;
-    }
-    catch (_b) {
-        titleEl.textContent = 'Failed to load post';
-    }
     try {
         const res = yield fetch(`/api/comments/post/${postId}`);
         const comments = yield res.json();

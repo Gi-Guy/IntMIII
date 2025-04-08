@@ -21,6 +21,11 @@ const postSchema = new Schema({
   author: {
     id: { type: String, required: true },
     username: { type: String, required: true }
+  },
+  isLocked: {
+    type: Boolean,
+    required: true,
+    default: false
   }
 });
 

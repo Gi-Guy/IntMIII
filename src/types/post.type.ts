@@ -9,5 +9,6 @@ export interface PostAuthor {
     content: string;
     createdAt: number;     
     author: PostAuthor;
+    isLocked: boolean;
   }
   

@@ -9,4 +9,5 @@ router.get('/:id', post_controller_1.getPostById);
 router.post('/', auth_middleware_1.authenticate, post_controller_1.createPost);
 // router.delete('/:id', authenticate, isAdmin, deletePostById);
 router.delete('/:id', auth_middleware_1.authenticate, post_controller_1.deletePost);
+router.put('/:id/lock', auth_middleware_1.authenticate, post_controller_1.toggleLockPost);
 exports.default = router;

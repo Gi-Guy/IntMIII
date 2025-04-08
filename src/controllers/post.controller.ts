@@ -29,8 +29,9 @@ export async function createPost(req: Request, res: Response): Promise<void> {
       createdAt: Date.now(),
       author: {
         id: user.id,
-        username: user.username
-      }
+        username: user.username,
+      },
+      isLocked: false,
     };
 
     await PostModel.create(post);
@@ -116,6 +117,28 @@ export async function deletePost(req: Request, res: Response): Promise<void> {
     await post.deleteOne();
 
     res.status(200).json({ message: 'Post deleted' });
+  } catch (err) {
+    res.status(500).json({ message: 'Server error', error: err });
+  }
+}
+export async function toggleLockPost(req: Request, res: Response): Promise<void> {
+  try {
+    const post = await PostModel.findOne({ id: req.params.id });
+    if (!post) {
+      res.status(404).json({ message: 'Post not found' });
+      return;
+    }
+
+    const user = (req as any).user;
+    if (!post.author || post.author.id !== user.id && !user.isAdmin) {
+      res.status(403).json({ message: 'Forbidden' });
+      return;
+    }
+
+    post.isLocked = req.body.isLocked;
+    await post.save();
+
+    res.status(200).json({ message: 'Lock state updated' });
   } catch (err) {
     res.status(500).json({ message: 'Server error', error: err });
   }

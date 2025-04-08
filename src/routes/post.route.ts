@@ -6,7 +6,8 @@ import {
   getAllPosts,
   getPostById,
   deletePostById,
-  deletePost
+  deletePost,
+  toggleLockPost
 } from '../controllers/post.controller';
 
 const router = Router();
@@ -16,5 +17,6 @@ router.get('/:id', getPostById);
 router.post('/', authenticate, createPost);
 // router.delete('/:id', authenticate, isAdmin, deletePostById);
 router.delete('/:id', authenticate, deletePost);
+router.put('/:id/lock', authenticate, toggleLockPost);
 
 export default router;

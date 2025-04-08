@@ -56,6 +56,11 @@ const postSchema = new mongoose_1.Schema({
     author: {
         id: { type: String, required: true },
         username: { type: String, required: true }
+    },
+    isLocked: {
+        type: Boolean,
+        required: true,
+        default: false
     }
 });
 exports.PostModel = mongoose_1.default.model('Post', postSchema);
