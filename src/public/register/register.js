@@ -19,7 +19,8 @@ document.addEventListener('DOMContentLoaded', () => {
             const res = yield fetch('/api/users/register', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(data)
+                body: JSON.stringify(data),
+                credentials: 'include'
             });
             const result = yield res.json();
             if (res.ok) {

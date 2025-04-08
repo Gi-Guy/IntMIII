@@ -12,7 +12,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const res = await fetch('/api/users/register', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(data)
+          body: JSON.stringify(data),
+          credentials: 'include'
         });
   
         const result = await res.json();
@@ -22,8 +23,8 @@ document.addEventListener('DOMContentLoaded', () => {
           message.style.color = 'var(--text)';
           form.reset();
           setTimeout(() => {
-            window.location.href = '/login/login.html';
-          }, 1000);
+          window.location.href = '/login/login.html';
+        }, 1000);
         } else {
           message.textContent = result.message || 'Error registering.';
           message.style.color = 'var(--text)';

@@ -1,47 +1,4 @@
-// // public/index.ts
 
-// document.addEventListener('DOMContentLoaded', async () => {
-//     const container = document.getElementById('posts-container');
-//     if (!container) return;
-  
-//     try {
-//       const res = await fetch('/api/posts');
-//       const posts = await res.json();
-  
-//       posts.forEach((post: any) => {
-//         const postEl = document.createElement('div');
-//         postEl.className = 'post-preview';
-//         postEl.innerHTML = `
-//           <h2>${post.title}</h2>
-//           <p>Posted: ${new Date(post.createdAt).toLocaleString()}</p>
-//           <p>By: ${post.author?.username || 'Unknown'} | Comments: ${post.comments?.length || 0}</p>
-//           <a href="/post.html?id=${post.id}" class="view-post">View Post</a>
-//         `;
-  
-//         if (post.author?.id === getCurrentUserId() || isAdmin()) {
-//           const editBtn = document.createElement('button');
-//           editBtn.textContent = 'Edit';
-//           editBtn.onclick = () => {
-//             window.location.href = `/edit-post.html?id=${post.id}`;
-//           };
-//           postEl.appendChild(editBtn);
-//         }
-  
-//         container.appendChild(postEl);
-//       });
-//     } catch (err) {
-//       container.innerHTML = '<p>Error loading posts</p>';
-//     }
-//   });
-  
-//   function getCurrentUserId(): string | null {
-//     // placeholder – replace with cookie/localStorage/token logic
-//     return localStorage.getItem('userId');
-//   }
-  
-//   function isAdmin(): boolean {
-//     return localStorage.getItem('isAdmin') === 'true';
-//   }
 type PostPreview = {
     id: string;
     title: string;
@@ -78,11 +35,16 @@ type PostPreview = {
         leftButton.textContent = 'Create Post';
         leftButton.onclick = () => window.location.href = '/createPost.html';
   
+        
         rightButton.textContent = 'Logout';
         rightButton.onclick = async () => {
-          document.cookie = 'token=; Max-Age=0';
+          await fetch('/api/users/logout', {credentials: 'include' });
           location.reload();
         };
+        // rightButton.onclick = async () => {
+        //   document.cookie = 'token=; Max-Age=0';
+        //   location.reload();
+        // };
   
         topBar.append(leftButton, rightButton);
       } else {

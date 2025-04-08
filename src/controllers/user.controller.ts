@@ -40,8 +40,16 @@ export async function registerUser(req: Request, res: Response): Promise<void> {
     };
 
     await UserModel.create(user);
-    res.status(201).json({ message: 'User registered successfully' });
 
+    const token = jwt.sign({ id: user.id }, JWT_SECRET_KEY, { expiresIn: '1d' });
+
+    res.cookie('token', token, {
+      httpOnly: true,
+      secure: false,
+      sameSite: 'lax'
+    });
+
+    res.status(201).json({ message: 'User registered successfully' });
   } catch (err) {
     res.status(500).json({ message: 'Server error', error: err });
   }
@@ -53,26 +61,30 @@ export async function loginUser(req: Request, res: Response): Promise<void> {
 
     const user = await UserModel.findOne({ username });
     if (!user) {
-      res.status(401).json({ message: 'Invalid username or password' });
+      res.status(401).json({ message: 'Invalid credentials' });
       return;
     }
 
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
-      res.status(401).json({ message: 'Invalid username or password' });
+      res.status(401).json({ message: 'Invalid credentials' });
       return;
     }
 
-    const token = jwt.sign({ id: user.id, username: user.username, isAdmin: user.isAdmin }, JWT_SECRET_KEY, {
-      expiresIn: '1h'
+    const token = jwt.sign({ id: user.id }, JWT_SECRET_KEY, { expiresIn: '1d' });
+
+    res.cookie('token', token, {
+      httpOnly: true,
+      secure: false,
+      sameSite: 'lax'
     });
 
-    res.status(200).json({ token });
-
+    res.status(200).json({ message: 'Login successful' });
   } catch (err) {
     res.status(500).json({ message: 'Server error', error: err });
   }
 }
+
 
 export async function getCurrentUser(req: Request, res: Response): Promise<void> {
   try {
@@ -97,6 +109,18 @@ export async function getAllUsers(req: Request, res: Response): Promise<void> {
   try {
     const users = await UserModel.find().select('-password');
     res.status(200).json(users);
+  } catch (err) {
+    res.status(500).json({ message: 'Server error', error: err });
+  }
+}
+export async function logoutUser(req: Request, res: Response): Promise<void> {
+  try {
+    res.clearCookie('token', {
+      httpOnly: true,
+      secure: false,
+      sameSite: 'lax'
+    });
+    res.status(200).json({ message: 'Logged out successfully' });
   } catch (err) {
     res.status(500).json({ message: 'Server error', error: err });
   }

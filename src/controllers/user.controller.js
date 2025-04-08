@@ -17,6 +17,7 @@ exports.registerUser = registerUser;
 exports.loginUser = loginUser;
 exports.getCurrentUser = getCurrentUser;
 exports.getAllUsers = getAllUsers;
+exports.logoutUser = logoutUser;
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const user_model_1 = require("../models/user.model");
@@ -44,6 +45,12 @@ function registerUser(req, res) {
                 registeredAt: Date.now()
             };
             yield user_model_1.UserModel.create(user);
+            const token = jsonwebtoken_1.default.sign({ id: user.id }, app_1.JWT_SECRET_KEY, { expiresIn: '1d' });
+            res.cookie('token', token, {
+                httpOnly: true,
+                secure: false,
+                sameSite: 'lax'
+            });
             res.status(201).json({ message: 'User registered successfully' });
         }
         catch (err) {
@@ -57,18 +64,21 @@ function loginUser(req, res) {
             const { username, password } = req.body;
             const user = yield user_model_1.UserModel.findOne({ username });
             if (!user) {
-                res.status(401).json({ message: 'Invalid username or password' });
+                res.status(401).json({ message: 'Invalid credentials' });
                 return;
             }
             const isMatch = yield bcryptjs_1.default.compare(password, user.password);
             if (!isMatch) {
-                res.status(401).json({ message: 'Invalid username or password' });
+                res.status(401).json({ message: 'Invalid credentials' });
                 return;
             }
-            const token = jsonwebtoken_1.default.sign({ id: user.id, username: user.username, isAdmin: user.isAdmin }, app_1.JWT_SECRET_KEY, {
-                expiresIn: '1h'
+            const token = jsonwebtoken_1.default.sign({ id: user.id }, app_1.JWT_SECRET_KEY, { expiresIn: '1d' });
+            res.cookie('token', token, {
+                httpOnly: true,
+                secure: false,
+                sameSite: 'lax'
             });
-            res.status(200).json({ token });
+            res.status(200).json({ message: 'Login successful' });
         }
         catch (err) {
             res.status(500).json({ message: 'Server error', error: err });
@@ -101,6 +111,21 @@ function getAllUsers(req, res) {
         try {
             const users = yield user_model_1.UserModel.find().select('-password');
             res.status(200).json(users);
+        }
+        catch (err) {
+            res.status(500).json({ message: 'Server error', error: err });
+        }
+    });
+}
+function logoutUser(req, res) {
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            res.clearCookie('token', {
+                httpOnly: true,
+                secure: false,
+                sameSite: 'lax'
+            });
+            res.status(200).json({ message: 'Logged out successfully' });
         }
         catch (err) {
             res.status(500).json({ message: 'Server error', error: err });

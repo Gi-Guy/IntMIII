@@ -1,5 +1,4 @@
 "use strict";
-// // public/index.ts
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -25,9 +24,13 @@ document.addEventListener('DOMContentLoaded', () => __awaiter(void 0, void 0, vo
             leftButton.onclick = () => window.location.href = '/createPost.html';
             rightButton.textContent = 'Logout';
             rightButton.onclick = () => __awaiter(void 0, void 0, void 0, function* () {
-                document.cookie = 'token=; Max-Age=0';
+                yield fetch('/api/users/logout', { credentials: 'include' });
                 location.reload();
             });
+            // rightButton.onclick = async () => {
+            //   document.cookie = 'token=; Max-Age=0';
+            //   location.reload();
+            // };
             topBar.append(leftButton, rightButton);
         }
         else {

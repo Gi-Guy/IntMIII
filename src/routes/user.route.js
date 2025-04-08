@@ -9,4 +9,5 @@ router.post('/register', user_controller_1.registerUser);
 router.post('/login', user_controller_1.loginUser);
 router.get('/me', auth_middleware_1.authenticate, user_controller_1.getCurrentUser);
 router.get('/', user_controller_2.getAllUsers);
+router.get('/logout', auth_middleware_1.authenticate, user_controller_2.logoutUser);
 exports.default = router;
