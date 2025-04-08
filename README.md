@@ -1,68 +1,87 @@
 # README - Blog Post Platform
 
 ## 🔧 Project Overview
-A Node.js + Express + TypeScript-based blog platform with MongoDB and SCSS (CUBE CSS methodology).
+A Node.js + Express + TypeScript-based blog platform with MongoDB.
 
 ### ✨ Features
 - **User System**
   - Registration & Login with cookies (JWT)
   - Secure password hashing
   - Admin and regular users
+  - View list of all users (admin only)
 
 - **Post Management**
-  - Create, view, delete posts
+  - Create, view, delete, lock/unlock posts
   - Only the post owner or admin can delete or lock
   - Locked posts prevent new comments
 
 - **Commenting System**
   - Users can comment on posts (unless locked)
   - Comments tied to specific posts
+  - Only comment author or admin can delete/edit
 
 - **Public HTML Pages**
-  - `register.html`, `login.html`, `index.html`, `createPost.html`, `post.html`
-  - Navigation, conditional buttons based on auth state
+  - `register.html`, `login.html`, `index.html`, `createPost.html`, `post.html`, `addComment.html`
+  - Dynamic TS files for each page
 
-
-### 📂 Project Structure (partial)
+### 📂 Full Project Structure
 ```
 src/
 ├── app.ts
 ├── models/
-│   ├── user.model.ts
+│   ├── comment.model.ts
 │   ├── post.model.ts
-│   └── comment.model.ts
+│   └── user.model.ts
 ├── controllers/
-│   ├── user.controller.ts
+│   ├── comment.controller.ts
 │   ├── post.controller.ts
 │   ├── post.lock.controller.ts
-│   └── comment.controller.ts
+│   └── user.controller.ts
 ├── routes/
-│   ├── user.route.ts
+│   ├── comment.route.ts
 │   ├── post.route.ts
-│   └── comment.route.ts
+│   └── user.route.ts
+├── middlewares/
+│   ├── admin.middleware.ts
+│   └── auth.middleware.ts
 ├── public/
-│   ├── index.html / index.ts
-│   ├── register/...
-│   ├── login/...
-│   ├── post/post.html / post.ts
-│   └── comments/addComment.html / addComment.ts
+│   ├── styles/
+│   │   ├── main.css
+│   │   └── main.scss
+│   ├── index.html
+│   ├── index.ts
+│   ├── login/
+│   │   ├── login.html
+│   │   └── login.ts
+│   ├── register/
+│   │   ├── register.html
+│   │   └── register.ts
+│   ├── post/
+│   │   ├── createPost.html
+│   │   ├── createPost.ts
+│   │   ├── post.html
+│   │   └── post.ts
+│   └── comments/
+│       ├── addComment.html
+│       └── addComment.ts
+├── tests/
+│   ├── post.test.ts
+│   └── user.test.ts
 ```
 
 ### 🧪 Testing
-- Vitest unit tests available for `user.test.ts`, `post.test.ts`
-- Test structure lives under `tests/`
+- Uses Vitest with Supertest
+- Unit tests for registration, login, post creation
 
 ### 🚀 Commands
-- Start Dev: `npx ts-node src/app.ts`
-- SCSS Watch: `npm run sass`
-- Compile: `npm run build`
-- Test: `npm run testV`
+- `npm run sass` - Compile SCSS
+- `npm run build` - Compile TS + SCSS
+- `npm start` - Build and run server
+- `npm run testV` - Run tests using Vitest
 
-### 🔐 Lock Feature (New)
-- `isLocked` boolean on posts
+### 🔐 Lock Feature
+- Posts include `isLocked` boolean
 - Locked posts:
-  - Do not show comment button
-  - Show message: "This post is locked for comments."
-  - Block server-side comment creation
-- Managed via `PUT /api/posts/:id/lock`
-
+  - Hide add comment button
+  - Show warning message
+  - Block server comment creation
