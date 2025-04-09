@@ -4,6 +4,7 @@ type CommentData = {
   createdAt: number;
   author: {
     username: string;
+    id: string;
   };
 };
 
@@ -33,7 +34,6 @@ document.addEventListener('DOMContentLoaded', async () => {
   commentFormContainer.id = 'comment-form-container';
   commentsContainer.before(commentFormContainer);
 
-  // Home button
   const homeBtn = document.getElementById('home-btn');
   homeBtn?.addEventListener('click', () => {
     window.location.href = '/index.html';
@@ -61,7 +61,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     return;
   }
 
-  //edit and delete post button
   if (user && (user.id === post.author.id || user.isAdmin)) {
     const editBtn = document.createElement('button');
     editBtn.textContent = 'Edit Post';
@@ -99,7 +98,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     commentBtn.before(actionContainer);
   }
-  
+
   if (post.isLocked) {
     commentBtn.style.display = 'none';
     commentFormContainer.innerHTML = `
@@ -175,6 +174,30 @@ document.addEventListener('DOMContentLoaded', async () => {
       const commentDiv = document.createElement('div');
       commentDiv.className = 'comment-box';
       commentDiv.innerHTML = `<p><strong>${c.author.username}</strong> | ${new Date(c.createdAt).toLocaleString()}</p><p>${c.content}</p>`;
+      //delete button
+      if (user && (user.isAdmin || user.id === c.author.id)) {
+        const deleteCommentBtn = document.createElement('button');
+        deleteCommentBtn.textContent = 'Delete';
+        deleteCommentBtn.style.marginTop = '0.5rem';
+        deleteCommentBtn.onclick = async () => {
+          const confirmed = confirm('Delete this comment?');
+          if (!confirmed) return;
+
+          const delRes = await fetch(`/api/comments/${c.id}`, {
+            method: 'DELETE',
+            credentials: 'include'
+          });
+
+          if (delRes.ok) {
+            commentDiv.remove();
+          } else {
+            alert('Failed to delete comment');
+          }
+        };
+
+        commentDiv.appendChild(deleteCommentBtn);
+      }
+
       commentsContainer.appendChild(commentDiv);
     });
   } catch {

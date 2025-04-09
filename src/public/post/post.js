@@ -21,7 +21,6 @@ document.addEventListener('DOMContentLoaded', () => __awaiter(void 0, void 0, vo
     const commentFormContainer = document.createElement('div');
     commentFormContainer.id = 'comment-form-container';
     commentsContainer.before(commentFormContainer);
-    // Home button
     const homeBtn = document.getElementById('home-btn');
     homeBtn === null || homeBtn === void 0 ? void 0 : homeBtn.addEventListener('click', () => {
         window.location.href = '/index.html';
@@ -46,7 +45,6 @@ document.addEventListener('DOMContentLoaded', () => __awaiter(void 0, void 0, vo
         titleEl.textContent = 'Failed to load post';
         return;
     }
-    //edit and delete post button
     if (user && (user.id === post.author.id || user.isAdmin)) {
         const editBtn = document.createElement('button');
         editBtn.textContent = 'Edit Post';
@@ -153,6 +151,28 @@ document.addEventListener('DOMContentLoaded', () => __awaiter(void 0, void 0, vo
             const commentDiv = document.createElement('div');
             commentDiv.className = 'comment-box';
             commentDiv.innerHTML = `<p><strong>${c.author.username}</strong> | ${new Date(c.createdAt).toLocaleString()}</p><p>${c.content}</p>`;
+            //delete button
+            if (user && (user.isAdmin || user.id === c.author.id)) {
+                const deleteCommentBtn = document.createElement('button');
+                deleteCommentBtn.textContent = 'Delete';
+                deleteCommentBtn.style.marginTop = '0.5rem';
+                deleteCommentBtn.onclick = () => __awaiter(void 0, void 0, void 0, function* () {
+                    const confirmed = confirm('Delete this comment?');
+                    if (!confirmed)
+                        return;
+                    const delRes = yield fetch(`/api/comments/${c.id}`, {
+                        method: 'DELETE',
+                        credentials: 'include'
+                    });
+                    if (delRes.ok) {
+                        commentDiv.remove();
+                    }
+                    else {
+                        alert('Failed to delete comment');
+                    }
+                });
+                commentDiv.appendChild(deleteCommentBtn);
+            }
             commentsContainer.appendChild(commentDiv);
         });
     }
