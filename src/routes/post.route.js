@@ -11,4 +11,5 @@ router.post('/', auth_middleware_1.authenticate, post_controller_1.createPost);
 router.delete('/:id', auth_middleware_1.authenticate, post_controller_1.deletePost);
 router.put('/:id/lock', auth_middleware_1.authenticate, post_controller_1.toggleLockPost);
 router.put('/:id', auth_middleware_1.authenticate, post_controller_1.updatePost);
+router.put('/:id/like', auth_middleware_1.authenticate, post_controller_1.toggleLike);
 exports.default = router;

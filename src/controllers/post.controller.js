@@ -16,6 +16,7 @@ exports.deletePostById = deletePostById;
 exports.deletePost = deletePost;
 exports.toggleLockPost = toggleLockPost;
 exports.updatePost = updatePost;
+exports.toggleLike = toggleLike;
 const post_model_1 = require("../models/post.model");
 const comment_model_1 = require("../models/comment.model");
 const comment_controller_1 = require("./comment.controller");
@@ -174,6 +175,51 @@ function updatePost(req, res) {
             post.content = req.body.content;
             yield post.save();
             res.status(200).json({ message: 'Post updated' });
+        }
+        catch (err) {
+            res.status(500).json({ message: 'Server error', error: err });
+        }
+    });
+}
+// export async function toggleLike(req: Request, res: Response):Promise<void> {
+//   const { id } = req.params;
+//   const userId = (req as any).user.id;
+//   try {
+//     const post = await PostModel.findOne({ id });
+//     if (!post) {
+//       res.status(404).json({ message: 'Post not found' });
+//       return;
+//     }
+//     const index = post.likes.indexOf(userId);
+//     if (index >= 0) {
+//       post.likes.splice(index, 1); // unlike
+//     } else {
+//       post.likes.push(userId); // like
+//     }
+//     await post.save();
+//     res.json({ message: 'Like toggled', likes: post.likes });
+//   } catch (err) {
+//     res.status(500).json({ message: 'Server error', error: err });
+//   }
+// }
+function toggleLike(req, res) {
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            const post = yield post_model_1.PostModel.findOne({ id: req.params.id });
+            if (!post) {
+                res.status(404).json({ message: 'Post not found' });
+                return;
+            }
+            const userId = req.user.id;
+            const index = post.likes.indexOf(userId);
+            if (index >= 0) {
+                post.likes.splice(index, 1);
+            }
+            else {
+                post.likes.push(userId);
+            }
+            yield post.save();
+            res.json({ message: 'Like toggled', likes: post.likes });
         }
         catch (err) {
             res.status(500).json({ message: 'Server error', error: err });

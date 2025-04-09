@@ -61,6 +61,10 @@ const postSchema = new mongoose_1.Schema({
         type: Boolean,
         required: true,
         default: false
-    }
+    },
+    likes: {
+        type: [String],
+        default: []
+    },
 });
 exports.PostModel = mongoose_1.default.model('Post', postSchema);

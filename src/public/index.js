@@ -59,6 +59,7 @@ document.addEventListener('DOMContentLoaded', () => __awaiter(void 0, void 0, vo
             const details = document.createElement('p');
             details.className = 'meta';
             details.textContent = `${new Date(post.createdAt).toLocaleString()} | ${(_a = post.commentCount) !== null && _a !== void 0 ? _a : 0} comments | by ${post.author.username}`;
+            // details.textContent = `${new Date(post.createdAt).toLocaleString()} | ${post.commentCount ?? 0} comments | by ${post.author.username} | ${post.likes.length} like(s)`;
             const viewBtn = document.createElement('button');
             viewBtn.textContent = 'View';
             viewBtn.onclick = () => location.href = `post/post.html?post=${post.id}`;

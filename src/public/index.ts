@@ -3,6 +3,7 @@ type PostPreview = {
   title: string;
   createdAt: number;
   commentCount: number;
+  likes: string[];
   isLocked: boolean;
   author: {
     username: string;
@@ -77,8 +78,10 @@ document.addEventListener('DOMContentLoaded', async () => {
 
       const details = document.createElement('p');
       details.className = 'meta';
-      details.textContent = `${new Date(post.createdAt).toLocaleString()} | ${post.commentCount ?? 0} comments | by ${post.author.username}`;
+       details.textContent = `${new Date(post.createdAt).toLocaleString()} | ${post.commentCount ?? 0} comments | by ${post.author.username}`;
+      // details.textContent = `${new Date(post.createdAt).toLocaleString()} | ${post.commentCount ?? 0} comments | by ${post.author.username} | ${post.likes.length} like(s)`;
 
+      
       const viewBtn = document.createElement('button');
       viewBtn.textContent = 'View';
       viewBtn.onclick = () => location.href = `post/post.html?post=${post.id}`;

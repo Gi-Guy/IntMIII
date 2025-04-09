@@ -25,6 +25,8 @@ document.addEventListener('DOMContentLoaded', () => __awaiter(void 0, void 0, vo
     homeBtn === null || homeBtn === void 0 ? void 0 : homeBtn.addEventListener('click', () => {
         window.location.href = '/index.html';
     });
+    if (homeBtn)
+        homeBtn.style.backgroundColor = 'var(--secondary)';
     let user = null;
     let post = null;
     try {
@@ -40,6 +42,23 @@ document.addEventListener('DOMContentLoaded', () => __awaiter(void 0, void 0, vo
         titleEl.textContent = post.title;
         contentEl.textContent = post.content;
         metaEl.innerHTML = `By <strong>${post.author.username}</strong> | ${new Date(post.createdAt).toLocaleString()}`;
+        const likeBtn = document.createElement('button');
+        likeBtn.textContent = post.likes.includes(user === null || user === void 0 ? void 0 : user.id) ? 'Unlike' : 'Like';
+        likeBtn.style.margin = '1rem 0';
+        likeBtn.onclick = () => __awaiter(void 0, void 0, void 0, function* () {
+            const res = yield fetch(`/api/posts/${post.id}/like`, {
+                method: 'PUT',
+                credentials: 'include'
+            });
+            if (res.ok) {
+                const updated = yield res.json();
+                likeBtn.textContent = updated.likes.includes(user === null || user === void 0 ? void 0 : user.id) ? 'Unlike' : 'Like';
+                likesInfo.textContent = `${updated.likes.length} like(s)`;
+            }
+        });
+        const likesInfo = document.createElement('p');
+        likesInfo.textContent = `${post.likes.length} like(s)`;
+        metaEl.after(likeBtn, likesInfo);
     }
     catch (_b) {
         titleEl.textContent = 'Failed to load post';
@@ -55,7 +74,7 @@ document.addEventListener('DOMContentLoaded', () => __awaiter(void 0, void 0, vo
         const deleteBtn = document.createElement('button');
         deleteBtn.textContent = 'Delete Post';
         deleteBtn.style.margin = '1rem auto 1rem 0.5rem';
-        // deleteBtn.style.backgroundColor = 'var(--secondary)';
+        deleteBtn.style.backgroundColor = 'var(--secondary)';
         deleteBtn.onclick = () => __awaiter(void 0, void 0, void 0, function* () {
             const confirmDelete = confirm('Are you sure you want to delete this post?');
             if (!confirmDelete)

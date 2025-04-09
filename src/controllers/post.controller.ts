@@ -166,4 +166,51 @@ export async function updatePost(req: Request, res: Response): Promise<void> {
     res.status(500).json({ message: 'Server error', error: err });
   }
 }
+// export async function toggleLike(req: Request, res: Response):Promise<void> {
+//   const { id } = req.params;
+//   const userId = (req as any).user.id;
+
+//   try {
+//     const post = await PostModel.findOne({ id });
+//     if (!post) {
+//       res.status(404).json({ message: 'Post not found' });
+//       return;
+//     }
+
+//     const index = post.likes.indexOf(userId);
+//     if (index >= 0) {
+//       post.likes.splice(index, 1); // unlike
+//     } else {
+//       post.likes.push(userId); // like
+//     }
+
+//     await post.save();
+//     res.json({ message: 'Like toggled', likes: post.likes });
+//   } catch (err) {
+//     res.status(500).json({ message: 'Server error', error: err });
+//   }
+// }
+export async function toggleLike(req: Request, res: Response): Promise<void> {
+  try {
+    const post = await PostModel.findOne({ id: req.params.id });
+    if (!post) {
+      res.status(404).json({ message: 'Post not found' });
+      return;
+    }
+
+    const userId = (req as any).user.id;
+    const index = post.likes.indexOf(userId);
+    if (index >= 0) {
+      post.likes.splice(index, 1);
+    } else {
+      post.likes.push(userId);
+    }
+
+    await post.save();
+    res.json({ message: 'Like toggled', likes: post.likes });
+  } catch (err) {
+    res.status(500).json({ message: 'Server error', error: err });
+  }
+}
+
 
