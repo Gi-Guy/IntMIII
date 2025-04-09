@@ -37,7 +37,7 @@ form {
 }
 
 button {
-  background-color: pink;
+  background-color: var(--accent);
   color: var(--text);
   border: none;
   padding: 0.5rem 1rem;

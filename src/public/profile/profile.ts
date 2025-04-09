@@ -8,6 +8,11 @@ document.addEventListener('DOMContentLoaded', async () => {
     const commentCountEl = document.getElementById('commentCount')!;
     const postsContainer = document.getElementById('user-posts')!;
     const homeBtn = document.getElementById('home-btn')!;
+    
+    homeBtn?.addEventListener('click', () => {
+      window.location.href = '/index.html';
+    });
+    if (homeBtn) homeBtn.style.backgroundColor = 'var(--secondary)';
     homeBtn.onclick = () => location.href = '/index.html';
   
     let user: any = null;

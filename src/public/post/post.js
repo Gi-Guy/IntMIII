@@ -55,6 +55,7 @@ document.addEventListener('DOMContentLoaded', () => __awaiter(void 0, void 0, vo
         const deleteBtn = document.createElement('button');
         deleteBtn.textContent = 'Delete Post';
         deleteBtn.style.margin = '1rem auto 1rem 0.5rem';
+        // deleteBtn.style.backgroundColor = 'var(--secondary)';
         deleteBtn.onclick = () => __awaiter(void 0, void 0, void 0, function* () {
             const confirmDelete = confirm('Are you sure you want to delete this post?');
             if (!confirmDelete)
@@ -151,11 +152,11 @@ document.addEventListener('DOMContentLoaded', () => __awaiter(void 0, void 0, vo
             const commentDiv = document.createElement('div');
             commentDiv.className = 'comment-box';
             commentDiv.innerHTML = `<p><strong>${c.author.username}</strong> | ${new Date(c.createdAt).toLocaleString()}</p><p>${c.content}</p>`;
-            //delete button
             if (user && (user.isAdmin || user.id === c.author.id)) {
                 const deleteCommentBtn = document.createElement('button');
                 deleteCommentBtn.textContent = 'Delete';
                 deleteCommentBtn.style.marginTop = '0.5rem';
+                deleteCommentBtn.style.backgroundColor = 'var(--secondary)';
                 deleteCommentBtn.onclick = () => __awaiter(void 0, void 0, void 0, function* () {
                     const confirmed = confirm('Delete this comment?');
                     if (!confirmed)

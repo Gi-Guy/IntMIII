@@ -18,6 +18,11 @@ document.addEventListener('DOMContentLoaded', () => __awaiter(void 0, void 0, vo
     const commentCountEl = document.getElementById('commentCount');
     const postsContainer = document.getElementById('user-posts');
     const homeBtn = document.getElementById('home-btn');
+    homeBtn === null || homeBtn === void 0 ? void 0 : homeBtn.addEventListener('click', () => {
+        window.location.href = '/index.html';
+    });
+    if (homeBtn)
+        homeBtn.style.backgroundColor = 'var(--secondary)';
     homeBtn.onclick = () => location.href = '/index.html';
     let user = null;
     try {
