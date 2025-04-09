@@ -20,14 +20,8 @@ document.addEventListener('DOMContentLoaded', async () => {
   const container = document.getElementById('posts-container') as HTMLElement;
   container.className = 'post-wrapper';
 
-  const topBar = document.createElement('div');
-  topBar.style.display = 'flex';
-  topBar.style.justifyContent = 'space-between';
-  topBar.style.marginBottom = '1.5rem';
-
-  const leftButton = document.createElement('button');
-  const rightButton = document.createElement('button');
-  const profileButton = document.createElement('button');
+  const topBar = document.getElementById("top-bar") as HTMLElement;
+  topBar.innerHTML = "";
 
   let user: User | null = null;
 
@@ -36,19 +30,22 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (userRes.ok) {
       user = await userRes.json();
 
-      leftButton.textContent = 'Create Post';
-      leftButton.onclick = () => window.location.href = '/post/createPost.html';
+      const createBtn = document.createElement("button");
+      createBtn.textContent = "Create Post";
+      createBtn.onclick = () => (window.location.href = "/post/createPost.html");
 
-      profileButton.textContent = 'Profile';
-      profileButton.onclick = () => window.location.href = '/profile/profile.html';
+      const profileBtn = document.createElement("button");
+      profileBtn.textContent = "Profile";
+      profileBtn.onclick = () => (window.location.href = "/profile/profile.html");
 
-      rightButton.textContent = 'Logout';
-      rightButton.onclick = async () => {
+      const logoutBtn = document.createElement("button");
+      logoutBtn.textContent = "Logout";
+      logoutBtn.onclick = async () => {
         await fetch('/api/users/logout', { credentials: 'include' });
         location.reload();
       };
 
-      topBar.append(leftButton, profileButton, rightButton);
+      topBar.append(createBtn, profileBtn, logoutBtn);
     } else {
       const registerBtn = document.createElement('button');
       registerBtn.textContent = 'Register';
@@ -63,8 +60,6 @@ document.addEventListener('DOMContentLoaded', async () => {
   } catch (err) {
     console.error('User check failed');
   }
-
-  document.body.insertBefore(topBar, container);
 
   try {
     const res = await fetch('/api/posts');

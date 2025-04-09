@@ -11,28 +11,26 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 document.addEventListener('DOMContentLoaded', () => __awaiter(void 0, void 0, void 0, function* () {
     const container = document.getElementById('posts-container');
     container.className = 'post-wrapper';
-    const topBar = document.createElement('div');
-    topBar.style.display = 'flex';
-    topBar.style.justifyContent = 'space-between';
-    topBar.style.marginBottom = '1.5rem';
-    const leftButton = document.createElement('button');
-    const rightButton = document.createElement('button');
-    const profileButton = document.createElement('button');
+    const topBar = document.getElementById("top-bar");
+    topBar.innerHTML = "";
     let user = null;
     try {
         const userRes = yield fetch('/api/users/me', { credentials: 'include' });
         if (userRes.ok) {
             user = yield userRes.json();
-            leftButton.textContent = 'Create Post';
-            leftButton.onclick = () => window.location.href = '/post/createPost.html';
-            profileButton.textContent = 'Profile';
-            profileButton.onclick = () => window.location.href = '/profile/profile.html';
-            rightButton.textContent = 'Logout';
-            rightButton.onclick = () => __awaiter(void 0, void 0, void 0, function* () {
+            const createBtn = document.createElement("button");
+            createBtn.textContent = "Create Post";
+            createBtn.onclick = () => (window.location.href = "/post/createPost.html");
+            const profileBtn = document.createElement("button");
+            profileBtn.textContent = "Profile";
+            profileBtn.onclick = () => (window.location.href = "/profile/profile.html");
+            const logoutBtn = document.createElement("button");
+            logoutBtn.textContent = "Logout";
+            logoutBtn.onclick = () => __awaiter(void 0, void 0, void 0, function* () {
                 yield fetch('/api/users/logout', { credentials: 'include' });
                 location.reload();
             });
-            topBar.append(leftButton, profileButton, rightButton);
+            topBar.append(createBtn, profileBtn, logoutBtn);
         }
         else {
             const registerBtn = document.createElement('button');
@@ -47,7 +45,6 @@ document.addEventListener('DOMContentLoaded', () => __awaiter(void 0, void 0, vo
     catch (err) {
         console.error('User check failed');
     }
-    document.body.insertBefore(topBar, container);
     try {
         const res = yield fetch('/api/posts');
         const posts = yield res.json();
