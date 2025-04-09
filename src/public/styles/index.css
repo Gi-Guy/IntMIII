@@ -1,0 +1,90 @@
+:root {
+  --text: #eceaf2;
+  --background: #100c1c;
+  --primary: #a18ae1;
+  --secondary: #341390;
+  --accent: #652ffa;
+  --gap: 2rem;
+  --padding: 1rem;
+  --radius: 1rem;
+  --post-max-width: 1100px;
+  --font-family: "Segoe UI", sans-serif;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--background);
+  color: var(--text);
+  font-family: var(--font-family);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+header {
+  text-align: center;
+  margin-top: 2rem;
+}
+
+.top-bar {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin: 1rem 0;
+}
+
+main {
+  width: 100%;
+  max-width: var(--post-max-width);
+  padding: var(--gap);
+  box-sizing: border-box;
+}
+
+footer {
+  margin: 3rem 0 1rem;
+  text-align: center;
+  color: var(--text);
+  opacity: 0.6;
+}
+
+button {
+  background-color: var(--accent);
+  color: var(--text);
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+button:hover {
+  background-color: var(--primary);
+}
+
+.post-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.post-preview {
+  background: var(--primary);
+  padding: var(--padding);
+  border-radius: var(--radius);
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.post-preview h3,
+.post-preview p.meta {
+  text-align: center;
+}
+
+.post-preview button {
+  margin-top: 0.5rem;
+  margin-right: 0.5rem;
+}
+
+/*# sourceMappingURL=index.css.map */

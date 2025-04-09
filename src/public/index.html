@@ -1,17 +1,24 @@
-<!-- public/index.html -->
-<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Home</title>
-  <link rel="stylesheet" href="/styles/main.css" />
+  <title>Blog Feed</title>
+  <link rel="stylesheet" href="styles/index.css" />
 </head>
 <body>
-  <h1>Blog Feed</h1>
-  <section id="posts-container">
-  </section>
+  <header>
+    <h1>Blog Feed</h1>
+    <div id="top-bar" class="top-bar"></div>
+  </header>
 
-  <script src="/index.js" type="module"></script>
+  <main>
+    <section id="posts-container"></section>
+  </main>
+
+  <footer>
+    <p>All rights reserved.</p>
+  </footer>
+
+  <script type="module" src="/index.js"></script>
 </body>
 </html>
